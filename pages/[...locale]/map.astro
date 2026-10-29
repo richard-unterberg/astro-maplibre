@@ -1,0 +1,12 @@
+---
+import Shell from '@layouts/AppShell.astro'
+import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+
+export const getStaticPaths = getLocaleStaticPaths
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+---
+
+<Shell title={t('mapPage.title')} description={t('mapPage.description')}>
+  {t('chemnitzMap')}
+</Shell>

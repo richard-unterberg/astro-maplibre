@@ -1,15 +1,19 @@
 import tailwindcss from '@tailwindcss/vite'
 import { astroBeastiesOutput } from '@unterberg/vite-beasties-output/astro'
 import { defineConfig } from 'astro/config'
+import { defaultLocale, locales } from './lib/i18n'
 
 export default defineConfig({
   site: 'https://richard-unterberg.github.io',
   base: '/astro-maplibre/',
+  trailingSlash: 'always',
   srcDir: '.',
   i18n: {
-    locales: ['de', 'en'],
-    defaultLocale: 'en',
-    routing: 'manual',
+    locales: [...locales],
+    defaultLocale,
+    routing: {
+      prefixDefaultLocale: false,
+    },
   },
   integrations: [
     astroBeastiesOutput({

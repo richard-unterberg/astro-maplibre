@@ -24,8 +24,11 @@
     href={`${import.meta.env.BASE_URL}favicon/apple-touch-icon.png`}
   >
   <title>{Astro.props.title}</title>
+  <title>{Astro.props.description}</title>
   <meta
     name="robots"
-    content={Astro.props.noRobots ? 'noindex, nofollow' : 'index, follow'}
+    content={Astro.props.robots === false
+      ? 'noindex, nofollow'
+      : 'index, follow'}
   >
 </head>

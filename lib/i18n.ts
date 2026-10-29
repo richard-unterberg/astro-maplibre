@@ -1,18 +1,22 @@
-export const languages = {
-  en: 'English',
-  de: 'Deutsch',
-}
-
-export const defaultLang = 'en'
-
 export const locales = ['en', 'de'] as const
 export type Locale = (typeof locales)[number]
 
-export const localeDefault = 'en' satisfies Locale
+export const defaultLocale = 'en' satisfies Locale
 
-export type LocaleString = {
-  [localeDefault]: string
-} & Partial<Record<Exclude<Locale, typeof localeDefault>, string>>
+export function resolveLocale(locale: string | undefined): Locale {
+  return locales.find((supportedLocale) => supportedLocale === locale) ?? defaultLocale
+}
+
+export function getLocaleStaticPaths() {
+  return locales.map((locale) => ({
+    params: { locale: locale === defaultLocale ? undefined : locale },
+  }))
+}
+
+type Page = {
+  description: string
+  title: string
+}
 
 interface Dictionary {
   all: string
@@ -29,17 +33,21 @@ interface Dictionary {
   open: string
   openCategoryMenu: string
   overview: string
-  startPage: {
-    description: string
-    title: string
-  }
+  startPage: Page
+  mapPage: Page
 }
 
-export type DictionaryKey = {
-  [Key in keyof Dictionary]: Dictionary[Key] extends string ? Key : never
-}[keyof Dictionary]
+type TranslationKey<T> = {
+  [Key in keyof T & string]: T[Key] extends string ? Key : `${Key}.${TranslationKey<T[Key]>}`
+}[keyof T & string]
 
-const dictionary = {
+type PartialDictionary<T> = {
+  [Key in keyof T]?: T[Key] extends string ? T[Key] : PartialDictionary<T[Key]>
+}
+
+type Dictionaries = Record<Locale, PartialDictionary<Dictionary>> & Record<typeof defaultLocale, Dictionary>
+
+const dictionary: Dictionaries = {
   de: {
     all: 'Alle',
     back: 'Zurueck',
@@ -52,13 +60,17 @@ const dictionary = {
     explorePlaces: 'Orte erkunden',
     map: 'Karte',
     mapZoom: 'Kartenzoom',
-    open: 'Oeffne',
-    openCategoryMenu: 'Kategorienmenue oeffnen',
+    open: 'Öffne',
+    openCategoryMenu: 'Kategorienmenue öffnen',
     overview: 'Uebersicht',
-    startPage: {
+    mapPage: {
       title: 'Interaktive Karte von Chemnitz',
       description:
         'Entdecke die interaktive Karte von Chemnitz mit vielfältigen Orten, übersichtlich kategorisiert und detailliert beschrieben. Erkunde die Stadt auf eine neue Art und Weise!',
+    },
+    startPage: {
+      title: 'Willkommen zu astro-maplibre',
+      description: '',
     },
   },
   en: {
@@ -76,23 +88,37 @@ const dictionary = {
     open: 'Open',
     openCategoryMenu: 'Open category menu',
     overview: 'Overview',
-    startPage: {
+    mapPage: {
       title: 'Interactive map of Chemnitz',
       description:
         'Discover the interactive map of Chemnitz with diverse locations, clearly categorized and described in detail. Explore the city in a new way!',
     },
+    startPage: {
+      title: 'Welcome to astro-maplibre',
+      description: '',
+    },
   },
-} satisfies Record<Locale, Dictionary>
-
-export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/')
-  if (lang in dictionary) return lang as keyof typeof dictionary
-  return defaultLang
 }
 
-export function useTranslations(lang: keyof typeof dictionary) {
-  const localizedUI = dictionary[lang]
-  return function t(key: keyof (typeof dictionary)[typeof defaultLang]) {
-    return key in localizedUI ? localizedUI[key] : dictionary[defaultLang][key]
+function readTranslation(source: object, key: string): string | undefined {
+  let value: unknown = source
+
+  for (const segment of key.split('.')) {
+    if (typeof value !== 'object' || value === null || !Object.hasOwn(value, segment)) return undefined
+    value = (value as Record<string, unknown>)[segment]
   }
+
+  return typeof value === 'string' ? value : undefined
+}
+
+export function createTranslator<T extends object>(fallback: T, localized: PartialDictionary<T>) {
+  return function t(key: TranslationKey<T>): string {
+    const translation = readTranslation(localized, key) ?? readTranslation(fallback, key)
+    if (translation === undefined) throw new Error(`Missing translation: ${key}`)
+    return translation
+  }
+}
+
+export function useTranslations(locale: Locale) {
+  return createTranslator<Dictionary>(dictionary[defaultLocale], dictionary[locale])
 }

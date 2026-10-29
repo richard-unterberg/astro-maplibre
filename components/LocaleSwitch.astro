@@ -1,0 +1,28 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { type Locale, locales, resolveLocale } from '@lib/i18n'
+
+const currentLocale = resolveLocale(Astro.currentLocale)
+const localeRoot = getRelativeLocaleUrl(currentLocale)
+const pagePath = Astro.url.pathname.slice(localeRoot.length)
+
+const generateRelativeLocaleLink = (lang: Locale) =>
+  getRelativeLocaleUrl(lang, pagePath)
+---
+
+<ul class="grid grid-cols-2 divide-x divide-base-muted-light h-6">
+  {locales.map((item) => (
+    <li>
+      <a
+        href={generateRelativeLocaleLink(item)}
+        hreflang={item}
+        lang={item}
+        aria-current={item === currentLocale ? 'page' : undefined}
+        class="px-2"
+        class:list={{ 'text-base-muted': item !== currentLocale }}
+      >
+        {item}
+      </a>
+    </li>
+  ))}
+</ul>

@@ -2,16 +2,15 @@
 import { getRelativeLocaleUrl } from 'astro:i18n'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
-import { getLangFromUrl, useTranslations } from '@lib/i18n'
+import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
 
-const lang = getLangFromUrl(Astro.url)
-
+export const getStaticPaths = getLocaleStaticPaths
+const lang = resolveLocale(Astro.currentLocale)
 const mapUrl = getRelativeLocaleUrl(lang, 'map')
-
 const t = useTranslations(lang)
 ---
 
-<Shell title={t('startPage').title}>
+<Shell title={t('startPage.title')} description={t('startPage.description')}>
   <LayoutComponent>
     {t('coordinates')}
     <a class="btn btn-neutral" href={mapUrl}>{t('map')}</a>
