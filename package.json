@@ -27,7 +27,7 @@
     "@unterberg/vite-beasties-output": "^0.2.0",
     "astro": "^7.4.4",
     "daisyui": "^5.7.50",
-    "knip": "^6.43.0",
+    "knip": "^6.44.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "@astrojs/ts-plugin": "^1.10.12",
