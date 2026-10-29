@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["culture", "history"],
+  "coordinates": [12.9259, 50.8377],
+  "description": {
+    "de": "Kultureller Platz umgeben von Museen, Oper und Theater.",
+    "en": "Cultural square surrounded by museums, opera, and theater."
+  },
+  "detailZoom": 15,
+  "id": "theaterplatz",
+  "title": {
+    "de": "Theaterplatz",
+    "en": "Theater Square"
+  }
+}

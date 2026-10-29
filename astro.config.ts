@@ -6,6 +6,11 @@ export default defineConfig({
   site: 'https://richard-unterberg.github.io',
   base: '/astro-maplibre/',
   srcDir: '.',
+  i18n: {
+    locales: ['de', 'en'],
+    defaultLocale: 'en',
+    routing: 'manual',
+  },
   integrations: [
     astroBeastiesOutput({
       outputDirectory: 'dist',

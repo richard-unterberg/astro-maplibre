@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["history", "culture"],
+  "coordinates": [12.9511, 50.8276],
+  "description": {
+    "de": "Historisches Schloss und Museum über dem Chemnitz Fluss.",
+    "en": "Historic castle complex and museum above the Chemnitz river."
+  },
+  "detailZoom": 15,
+  "id": "schlossbergmuseum",
+  "title": {
+    "de": "Schlossbergmuseum",
+    "en": "Schlossberg Museum"
+  }
+}

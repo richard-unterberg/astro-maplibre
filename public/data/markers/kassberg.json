@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["history"],
+  "coordinates": [12.8998, 50.8339],
+  "description": {
+    "de": "Großes Gründerzeitviertel mit dichter urbaner Architektur.",
+    "en": "Large Grunderzeit district with dense urban architecture."
+  },
+  "detailZoom": 14,
+  "id": "kassberg",
+  "title": {
+    "de": "Kassberg",
+    "en": "Kassberg"
+  }
+}

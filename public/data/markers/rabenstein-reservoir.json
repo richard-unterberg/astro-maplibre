@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature"],
+  "coordinates": [12.7976, 50.8274],
+  "description": {
+    "de": "Stausee und bewaldetes Erholungsgebiet am westlichen Rand von Chemnitz.",
+    "en": "Reservoir and forested recreation area at the western edge of Chemnitz."
+  },
+  "detailZoom": 13,
+  "id": "rabenstein-reservoir",
+  "title": {
+    "de": "Stausee Rabenstein",
+    "en": "Rabenstein Reservoir"
+  }
+}

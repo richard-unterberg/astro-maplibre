@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["culture"],
+  "coordinates": [12.9216, 50.8329],
+  "description": {
+    "de": "Zentrale Kunstsammlungen und Ausstellungsort im Stadtzentrum.",
+    "en": "Central art collections and exhibition venue in the city center."
+  },
+  "detailZoom": 15,
+  "id": "kunstsammlungen",
+  "title": {
+    "de": "Kunstsammlungen",
+    "en": "Art Collections"
+  }
+}

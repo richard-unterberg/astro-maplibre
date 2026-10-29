@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["culture", "workspace"],
+  "coordinates": [12.9241, 50.833],
+  "description": {
+    "de": "Öffentliche Bibliothek und kultureller Lernraum im Zentrum von Chemnitz.",
+    "en": "Public library and cultural learning space in central Chemnitz."
+  },
+  "detailZoom": 15,
+  "id": "stadtbibliothek",
+  "title": {
+    "de": "Stadtbibliothek",
+    "en": "City Library"
+  }
+}

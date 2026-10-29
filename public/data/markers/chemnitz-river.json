@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["mobility", "nature"],
+  "coordinates": [12.9125, 50.8299],
+  "description": {
+    "de": "Flusskorridor und urbaxe Bewegungsachse durch das zentrale Chemnitz.",
+    "en": "River corridor and urban movement axis through central Chemnitz."
+  },
+  "detailZoom": 14,
+  "id": "chemnitz-river",
+  "title": {
+    "de": "Chemnitz Fluss",
+    "en": "Chemnitz River"
+  }
+}

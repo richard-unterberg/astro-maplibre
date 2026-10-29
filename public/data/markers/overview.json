@@ -1,0 +1,222 @@
+[
+  {
+    "categoryIds": ["history", "culture"],
+    "coordinates": [12.9252, 50.8342],
+    "detailZoom": 15,
+    "id": "karl-marx-monument",
+    "title": {
+      "de": "Karl-Marx-Monument",
+      "en": "Karl Marx Monument"
+    }
+  },
+  {
+    "categoryIds": ["culture", "history"],
+    "coordinates": [12.9259, 50.8377],
+    "detailZoom": 15,
+    "id": "theaterplatz",
+    "title": {
+      "de": "Theaterplatz",
+      "en": "Theater Square"
+    }
+  },
+  {
+    "categoryIds": ["nature"],
+    "coordinates": [12.9139, 50.8413],
+    "detailZoom": 14,
+    "id": "schlossteich",
+    "title": {
+      "de": "Schlossteich",
+      "en": "Castle Pond"
+    }
+  },
+  {
+    "categoryIds": ["history", "culture"],
+    "coordinates": [12.9036, 50.8238],
+    "detailZoom": 15,
+    "id": "industrial-museum",
+    "title": {
+      "de": "Industriemuseum",
+      "en": "Industrial Museum"
+    }
+  },
+  {
+    "categoryIds": ["history"],
+    "coordinates": [12.8998, 50.8339],
+    "detailZoom": 14,
+    "id": "kassberg",
+    "title": {
+      "de": "Kassberg",
+      "en": "Kassberg"
+    }
+  },
+  {
+    "categoryIds": ["mobility"],
+    "coordinates": [12.9303, 50.8395],
+    "detailZoom": 15,
+    "id": "main-station",
+    "title": {
+      "de": "Hauptbahnhof",
+      "en": "Main Station"
+    }
+  },
+  {
+    "categoryIds": ["workspace"],
+    "coordinates": [12.9298, 50.8136],
+    "detailZoom": 15,
+    "id": "tu-campus",
+    "title": {
+      "de": "TU Campus",
+      "en": "TU Campus"
+    }
+  },
+  {
+    "categoryIds": ["nature"],
+    "coordinates": [12.8992, 50.8028],
+    "detailZoom": 14,
+    "id": "stadtpark",
+    "title": {
+      "de": "Stadtpark",
+      "en": "City Park"
+    }
+  },
+  {
+    "categoryIds": ["food", "history"],
+    "coordinates": [12.9207, 50.8332],
+    "detailZoom": 15,
+    "id": "markthalle",
+    "title": {
+      "de": "Markthalle",
+      "en": "Market Hall"
+    }
+  },
+  {
+    "categoryIds": ["workspace", "history"],
+    "coordinates": [12.9018, 50.8207],
+    "detailZoom": 15,
+    "id": "wirkbau",
+    "title": {
+      "de": "Wirkbau",
+      "en": "Wirkbau"
+    }
+  },
+  {
+    "categoryIds": ["culture"],
+    "coordinates": [12.9216, 50.8329],
+    "detailZoom": 15,
+    "id": "kunstsammlungen",
+    "title": {
+      "de": "Kunstsammlungen",
+      "en": "Art Collections"
+    }
+  },
+  {
+    "categoryIds": ["culture", "workspace"],
+    "coordinates": [12.9241, 50.833],
+    "detailZoom": 15,
+    "id": "stadtbibliothek",
+    "title": {
+      "de": "Stadtbibliothek",
+      "en": "City Library"
+    }
+  },
+  {
+    "categoryIds": ["nature", "culture"],
+    "coordinates": [12.9089, 50.852],
+    "detailZoom": 14,
+    "id": "kuechwald",
+    "title": {
+      "de": "Küchwald",
+      "en": "Kuchwald"
+    }
+  },
+  {
+    "categoryIds": ["nature", "history"],
+    "coordinates": [12.8154, 50.8331],
+    "detailZoom": 14,
+    "id": "rabenstein-castle",
+    "title": {
+      "de": "Burg Rabenstein",
+      "en": "Rabenstein Castle"
+    }
+  },
+  {
+    "categoryIds": ["nature"],
+    "coordinates": [12.7976, 50.8274],
+    "detailZoom": 13,
+    "id": "rabenstein-reservoir",
+    "title": {
+      "de": "Stausee Rabenstein",
+      "en": "Rabenstein Reservoir"
+    }
+  },
+  {
+    "categoryIds": ["history", "culture"],
+    "coordinates": [12.9511, 50.8276],
+    "detailZoom": 15,
+    "id": "schlossbergmuseum",
+    "title": {
+      "de": "Schlossbergmuseum",
+      "en": "Schlossberg Museum"
+    }
+  },
+  {
+    "categoryIds": ["mobility", "nature"],
+    "coordinates": [12.9125, 50.8299],
+    "detailZoom": 14,
+    "id": "chemnitz-river",
+    "title": {
+      "de": "Chemnitz Fluss",
+      "en": "Chemnitz River"
+    }
+  },
+  {
+    "categoryIds": ["culture", "food"],
+    "coordinates": [12.9237, 50.8322],
+    "detailZoom": 15,
+    "id": "markt",
+    "title": {
+      "de": "Markt",
+      "en": "Market Square"
+    }
+  },
+  {
+    "categoryIds": ["workspace", "culture"],
+    "coordinates": [12.905, 50.822],
+    "detailZoom": 15,
+    "id": "spinnerei",
+    "title": {
+      "de": "Spinnerei",
+      "en": "Spinnerei"
+    }
+  },
+  {
+    "categoryIds": ["mobility", "history"],
+    "coordinates": [12.9168, 50.8295],
+    "detailZoom": 15,
+    "id": "zentralhaltestelle",
+    "title": {
+      "de": "Zentralhaltestelle",
+      "en": "Central Station"
+    }
+  },
+  {
+    "categoryIds": ["food", "culture"],
+    "coordinates": [12.9197, 50.8318],
+    "detailZoom": 15,
+    "id": "rosenhof",
+    "title": {
+      "de": "Rosenhof",
+      "en": "Rosenhof"
+    }
+  },
+  {
+    "categoryIds": ["nature", "workspace"],
+    "coordinates": [12.9334, 50.8062],
+    "detailZoom": 14,
+    "id": "reichenhain-campus-edge",
+    "title": {
+      "de": "Reichenhain Campusrand",
+      "en": "Reichenhain Campus Edge"
+    }
+  }
+]

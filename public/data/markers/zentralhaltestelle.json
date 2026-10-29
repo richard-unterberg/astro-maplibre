@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["mobility", "history"],
+  "coordinates": [12.9168, 50.8295],
+  "description": {
+    "de": "Historischer Straßenbahn- und Busknotenpunkt nahe dem Stadtzentrum.",
+    "en": "Historic tram and bus interchange near the city center."
+  },
+  "detailZoom": 15,
+  "id": "zentralhaltestelle",
+  "title": {
+    "de": "Zentralhaltestelle",
+    "en": "Central Station"
+  }
+}

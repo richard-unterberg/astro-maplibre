@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["culture", "food"],
+  "coordinates": [12.9237, 50.8322],
+  "description": {
+    "de": "Zentraler Platz für Märkte, Veranstaltungen und alltägliches Stadtleben.",
+    "en": "Central square for markets, civic events, and everyday city life."
+  },
+  "detailZoom": 15,
+  "id": "markt",
+  "title": {
+    "de": "Markt",
+    "en": "Market Square"
+  }
+}

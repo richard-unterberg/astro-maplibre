@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["food", "culture"],
+  "coordinates": [12.9197, 50.8318],
+  "description": {
+    "de": "Kompakte Innenstadtpassage mit Cafés, Geschäften und alltäglichen Dienstleistungen.",
+    "en": "Compact city center passage with cafes, shops, and everyday services."
+  },
+  "detailZoom": 15,
+  "id": "rosenhof",
+  "title": {
+    "de": "Rosenhof",
+    "en": "Rosenhof"
+  }
+}

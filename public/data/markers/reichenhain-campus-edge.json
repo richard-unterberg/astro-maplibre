@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature", "workspace"],
+  "coordinates": [12.9334, 50.8062],
+  "description": {
+    "de": "Grünes campusnahes Viertel mit studentischem Leben und lokalen Wegen.",
+    "en": "Green campus-adjacent district with student life and local routes."
+  },
+  "detailZoom": 14,
+  "id": "reichenhain-campus-edge",
+  "title": {
+    "de": "Reichenhain Campusrand",
+    "en": "Reichenhain Campus Edge"
+  }
+}

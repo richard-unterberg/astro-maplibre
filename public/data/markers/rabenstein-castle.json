@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature", "history"],
+  "coordinates": [12.8154, 50.8331],
+  "description": {
+    "de": "Kleines Schloss und lokales Naturziel in der Nähe von Chemnitz.",
+    "en": "Small castle and local nature destination near Chemnitz."
+  },
+  "detailZoom": 14,
+  "id": "rabenstein-castle",
+  "title": {
+    "de": "Burg Rabenstein",
+    "en": "Rabenstein Castle"
+  }
+}

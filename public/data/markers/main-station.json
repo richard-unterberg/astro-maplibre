@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["mobility"],
+  "coordinates": [12.9303, 50.8395],
+  "description": {
+    "de": "Hauptbahnhof und Mobilitätsknotenpunkt.",
+    "en": "Main rail station and mobility hub."
+  },
+  "detailZoom": 15,
+  "id": "main-station",
+  "title": {
+    "de": "Hauptbahnhof",
+    "en": "Main Station"
+  }
+}

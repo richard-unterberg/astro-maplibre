@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["workspace", "history"],
+  "coordinates": [12.9018, 50.8207],
+  "description": {
+    "de": "Kreativ- und arbeitsplatzorientierter Industriekomplex.",
+    "en": "Creative and workspace-oriented industrial complex."
+  },
+  "detailZoom": 15,
+  "id": "wirkbau",
+  "title": {
+    "de": "Wirkbau",
+    "en": "Wirkbau"
+  }
+}

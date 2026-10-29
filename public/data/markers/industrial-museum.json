@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["history", "culture"],
+  "coordinates": [12.9036, 50.8238],
+  "description": {
+    "de": "Industriedenkmal, das die Fertigungsgeschichte von Chemnitz dokumentiert.",
+    "en": "Industrial heritage site documenting the manufacturing history of Chemnitz."
+  },
+  "detailZoom": 15,
+  "id": "industrial-museum",
+  "title": {
+    "de": "Industriemuseum",
+    "en": "Industrial Museum"
+  }
+}

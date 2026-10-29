@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature", "culture"],
+  "coordinates": [12.9089, 50.852],
+  "description": {
+    "de": "Großer Park und Erholungsgebiet nördlich der Chemnitzer Innenstadt.",
+    "en": "Large park and recreation area north of central Chemnitz."
+  },
+  "detailZoom": 14,
+  "id": "kuechwald",
+  "title": {
+    "de": "Küchwald",
+    "en": "Kuchwald"
+  }
+}

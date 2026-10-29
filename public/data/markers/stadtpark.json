@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature"],
+  "coordinates": [12.8992, 50.8028],
+  "description": {
+    "de": "Langer grüner Korridor entlang des Chemnitz Flusses.",
+    "en": "Long green corridor along the Chemnitz river."
+  },
+  "detailZoom": 14,
+  "id": "stadtpark",
+  "title": {
+    "de": "Stadtpark",
+    "en": "City Park"
+  }
+}

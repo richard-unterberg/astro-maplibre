@@ -1,0 +1,14 @@
+---
+import LayoutComponent from '@components/LayoutComponent.astro'
+import { withBaseUrl } from '@lib/withBaseUrl'
+---
+
+<header>
+  <LayoutComponent class="h-16 bg-base-100">
+    <ul class="list-none">
+      <li>
+        <a href={withBaseUrl('')}>astro-maplibre</a>
+      </li>
+    </ul>
+  </LayoutComponent>
+</header>

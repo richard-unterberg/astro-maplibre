@@ -1,8 +1,19 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
+import { getLangFromUrl, useTranslations } from '@lib/i18n'
+
+const lang = getLangFromUrl(Astro.url)
+
+const mapUrl = getRelativeLocaleUrl(lang, 'map')
+
+const t = useTranslations(lang)
 ---
 
-<Shell title="Hey">
-  <LayoutComponent>This is the start page </LayoutComponent>
+<Shell title={t('startPage').title}>
+  <LayoutComponent>
+    {t('coordinates')}
+    <a class="btn btn-neutral" href={mapUrl}>{t('map')}</a>
+  </LayoutComponent>
 </Shell>

@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["history", "culture"],
+  "coordinates": [12.9252, 50.8342],
+  "description": {
+    "de": "Großes Denkmal zu Ehren von Karl Marx, einem der berühmtesten Söhne der Stadt.",
+    "en": "Larg monument honoring Karl Marx, one of the city’s most famous sons."
+  },
+  "detailZoom": 15,
+  "id": "karl-marx-monument",
+  "title": {
+    "de": "Karl-Marx-Monument",
+    "en": "Karl Marx Monument"
+  }
+}

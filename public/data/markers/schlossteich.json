@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["nature"],
+  "coordinates": [12.9139, 50.8413],
+  "description": {
+    "de": "Städtischer See und grüne Erholungsfläche nahe der Chemnitzer Innenstadt.",
+    "en": "Urban lake and green recreation area near central Chemnitz."
+  },
+  "detailZoom": 14,
+  "id": "schlossteich",
+  "title": {
+    "de": "Schlossteich",
+    "en": "Castle Pond"
+  }
+}

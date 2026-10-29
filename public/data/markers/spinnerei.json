@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["workspace", "culture"],
+  "coordinates": [12.905, 50.822],
+  "description": {
+    "de": "Ehemaliges Industriegebiet mit kreativer Nachnutzung und Veranstaltungsflächen.",
+    "en": "Former industrial area with creative reuse and event spaces."
+  },
+  "detailZoom": 15,
+  "id": "spinnerei",
+  "title": {
+    "de": "Spinnerei",
+    "en": "Spinnerei"
+  }
+}

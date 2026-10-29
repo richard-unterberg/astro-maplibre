@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["food", "history"],
+  "coordinates": [12.9207, 50.8332],
+  "description": {
+    "de": "Historische Markthalle und food-orientierter urbaner Ort.",
+    "en": "Historic market hall and food-oriented urban place."
+  },
+  "detailZoom": 15,
+  "id": "markthalle",
+  "title": {
+    "de": "Markthalle",
+    "en": "Market Hall"
+  }
+}

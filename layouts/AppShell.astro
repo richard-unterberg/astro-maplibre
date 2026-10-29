@@ -1,25 +1,28 @@
 ---
 import '../styles/global.css'
 import { ClientRouter, fade } from 'astro:transitions'
-import Footer from '@components/Footer.astro'
+import Header from '@components/Header.astro'
 import MetaHead from '@components/MetaHead.astro'
+import { getLangFromUrl } from '@lib/i18n'
 
-const title = Astro.props.title
+const title: string = Astro.props.title
   ? `${Astro.props.title} | astro-maplibre`
   : 'astro-maplibre'
+
+const lang = getLangFromUrl(Astro.url)
 ---
 
 <html
-  lang="de"
+  lang={lang}
   data-theme="dark"
   transition:animate={fade({ duration: '120ms' })}
 >
   <MetaHead title={title} noRobots={Astro.props.noRobots} />
   <body>
-    <main class="prose-container">
+    <Header />
+    <main class="prose-container relative h-[calc(100dvh-16*var(--spacing))]">
       <slot />
     </main>
-    <Footer />
     <ClientRouter />
   </body>
 </html>

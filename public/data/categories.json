@@ -1,0 +1,68 @@
+[
+  {
+    "description": {
+      "de": "Museen, Theater, Kunst im oeffentlichen Raum und kulturelle Wahrzeichen.",
+      "en": "Museums, theaters, public art, and cultural landmarks."
+    },
+    "id": "culture",
+    "title": {
+      "de": "Kultur",
+      "en": "Culture"
+    }
+  },
+  {
+    "description": {
+      "de": "Historische Orte, Denkmale und Industrieerbe.",
+      "en": "Historic places, monuments, and industrial heritage."
+    },
+    "id": "history",
+    "title": {
+      "de": "Geschichte",
+      "en": "History"
+    }
+  },
+  {
+    "description": {
+      "de": "Parks, Seen, Waelder, Aussichtspunkte und Orte im Freien.",
+      "en": "Parks, lakes, forests, viewpoints, and outdoor places."
+    },
+    "id": "nature",
+    "title": {
+      "de": "Natur",
+      "en": "Nature"
+    }
+  },
+  {
+    "description": {
+      "de": "Bahnhoefe, Verkehrsknoten, Bruecken und Bewegungsachsen.",
+      "en": "Stations, transport hubs, bridges, and movement corridors."
+    },
+    "id": "mobility",
+    "title": {
+      "de": "Mobilitaet",
+      "en": "Mobility"
+    }
+  },
+  {
+    "description": {
+      "de": "Cafes, Maerkte, Restaurants und lokale Essensorte.",
+      "en": "Cafes, markets, restaurants, and local food spots."
+    },
+    "id": "food",
+    "title": {
+      "de": "Essen",
+      "en": "Food"
+    }
+  },
+  {
+    "description": {
+      "de": "Campusse, Coworking-Orte, Bibliotheken und Lernorte.",
+      "en": "Campuses, coworking spaces, libraries, and learning places."
+    },
+    "id": "workspace",
+    "title": {
+      "de": "Arbeitsorte",
+      "en": "Workspace"
+    }
+  }
+]

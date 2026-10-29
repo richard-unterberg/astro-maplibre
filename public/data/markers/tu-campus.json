@@ -1,0 +1,14 @@
+{
+  "categoryIds": ["workspace"],
+  "coordinates": [12.9298, 50.8136],
+  "description": {
+    "de": "Universitätscampus und Lernumgebung.",
+    "en": "University campus and learning environment."
+  },
+  "detailZoom": 15,
+  "id": "tu-campus",
+  "title": {
+    "de": "TU Campus",
+    "en": "TU Campus"
+  }
+}

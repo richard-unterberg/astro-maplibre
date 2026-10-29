@@ -1,0 +1,11 @@
+---
+import Shell from '@layouts/AppShell.astro'
+import { getLangFromUrl, useTranslations } from '@lib/i18n'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+
+<Shell title={t('map')}>
+  {t('chemnitzMap')}
+</Shell>
