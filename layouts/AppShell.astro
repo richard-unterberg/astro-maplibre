@@ -1,0 +1,25 @@
+---
+import '../styles/global.css'
+import { ClientRouter, fade } from 'astro:transitions'
+import Footer from '@components/Footer.astro'
+import MetaHead from '@components/MetaHead.astro'
+
+const title = Astro.props.title
+  ? `${Astro.props.title} | astro-maplibre`
+  : 'astro-maplibre'
+---
+
+<html
+  lang="de"
+  data-theme="dark"
+  transition:animate={fade({ duration: '120ms' })}
+>
+  <MetaHead title={title} noRobots={Astro.props.noRobots} />
+  <body>
+    <main class="prose-container">
+      <slot />
+    </main>
+    <Footer />
+    <ClientRouter />
+  </body>
+</html>

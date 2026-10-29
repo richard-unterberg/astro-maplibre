@@ -1,0 +1,36 @@
+{
+  "name": "astro-maplibre",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "prod": "astro build && astro preview",
+    "typecheck": "astro check",
+    "lint": "biome lint --write .",
+    "format": "biome format --write .",
+    "check:knip": "pnpm knip",
+    "verify": "pnpm format && pnpm run check:knip && pnpm run lint && pnpm run typecheck"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.2",
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@biomejs/biome": "^2.6.4",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.6",
+    "@unterberg/vite-beasties-output": "^0.2.0",
+    "astro": "^7.4.4",
+    "daisyui": "^5.7.50",
+    "knip": "^6.43.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "@astrojs/ts-plugin": "^1.10.12",
+    "cva": "1.0.0-beta.12"
+  }
+}
