@@ -22,6 +22,7 @@ export default defineConfig({
       beastiesOptions: {
         // Astro references these from separate inline styles; keep them available during head swaps.
         keyframes: 'all',
+        preload: 'media',
         allowRules: [
           /data-theme=.*dark/,
           /data-theme=.*light/,
