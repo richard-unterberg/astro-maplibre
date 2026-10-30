@@ -30,10 +30,10 @@ document.addEventListener('astro:page-load', () => {
   if (!toggle) return
 
   toggle.checked = getCurrentThemePreference() === ThemePreference.dark
-  toggle.addEventListener('change', () => {
+  toggle.onchange = () => {
     setThemePreference(
       toggle.checked ? ThemePreference.dark : ThemePreference.light,
     )
-  })
+  }
 })
 </script>

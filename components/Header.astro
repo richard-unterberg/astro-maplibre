@@ -3,17 +3,53 @@ import { getRelativeLocaleUrl } from 'astro:i18n'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import LocaleSwitch from '@components/LocaleSwitch.astro'
 import ThemeSwitch from '@components/ThemeSwitch.astro'
-import { resolveLocale } from '@lib/i18n'
+import { resolveLocale, useTranslations } from '@lib/i18n'
+import { type Category, getCategories } from '@lib/places'
 
-const homeUrl = getRelativeLocaleUrl(resolveLocale(Astro.currentLocale))
+const lang = resolveLocale(Astro.currentLocale)
+const homeUrl = getRelativeLocaleUrl(lang)
+const t = useTranslations(lang)
+const categories: Category[] = await getCategories()
+const activeCategory = Astro.params.category
+const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
 ---
 
-<header class="bg-base-100">
-  <LayoutComponent class="h-16 flex justify-between items-center">
-    <a href={homeUrl} class="font-extrabold">astro-maplibre</a>
-    <div class="flex items-center gap-4">
-      <LocaleSwitch />
-      <ThemeSwitch />
-    </div>
-  </LayoutComponent>
+<header class="shrink-0 min-w-0">
+  <div class="bg-base-100">
+    <LayoutComponent class="h-16 flex justify-between items-center gap-2">
+      <a href={homeUrl} class="font-extrabold">astro-maplibre</a>
+      <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+        <LocaleSwitch />
+        <ThemeSwitch />
+      </div>
+    </LayoutComponent>
+  </div>
+  <div class="absolute top-16 z-10">
+    <nav aria-label={t('categories')} class="overflow-x-auto pb-3">
+      <ul class="flex gap-2 w-max">
+        <li>
+          <a
+            href={getRelativeLocaleUrl(lang, 'map')}
+            aria-current={allActive ? 'page' : undefined}
+            class:list={['btn btn-sm', allActive ? 'btn-primary' : 'btn-ghost']}
+            >{t('all')}</a
+          >
+        </li>
+        {categories.map((category) => (
+          <li>
+            <a
+              href={getRelativeLocaleUrl(lang, `category/${category.id}`)}
+              aria-current={activeCategory === category.id ? 'page' : undefined}
+              class:list={[
+                'btn btn-sm',
+                activeCategory === category.id ? 'btn-primary' : 'btn-ghost',
+              ]}
+            >
+              {category.title[lang]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
 </header>

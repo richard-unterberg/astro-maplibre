@@ -4,6 +4,7 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { localizeMapPlaces, overviewBounds } from '@lib/mapData'
 import { getPlaces } from '@lib/places'
 
 export const getStaticPaths = getLocaleStaticPaths
@@ -13,9 +14,16 @@ const places = await getPlaces()
 ---
 
 <Shell title={t('mapPage.title')} description={t('mapPage.description')}>
-  <MapShell>
+  <MapShell
+    view={{
+      mode: 'bounds',
+      places: localizeMapPlaces(places, lang),
+      fallbackBounds: overviewBounds(places),
+    }}
+  >
     <div
-      class="p-0 absolute bottom-0 left-0 w-dvw h-1/2 bg-base-100 z-4 overflow-scroll"
+      data-map-occluder
+      class="p-0 absolute bottom-0 left-0 w-full max-h-1/2 bg-base-100 z-4 overflow-y-auto"
     >
       <LayoutComponent>
         <h2>{t('explorePlaces')}</h2>

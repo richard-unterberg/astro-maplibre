@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import { test } from 'node:test'
-import { createPlaceDetailsLoader, createPlacesLoader } from '../lib/places.ts'
+import { createCategoriesLoader, createPlaceDetailsLoader, createPlacesLoader } from '../lib/places.ts'
+import { markerData } from '../map/view.ts'
 
 const overviewUrl =
   'https://raw.githubusercontent.com/richard-unterberg/astro-maplibre/refs/heads/main/public/data/markers/overview.json'
@@ -225,17 +226,30 @@ test('reports failed detail and category requests with their source URL', async 
   }
 })
 
-test('all repository detail files resolve their overview IDs and categories', async () => {
+test('repository keeps 22 places in four categories with matching single-category details', async () => {
   const fetcher = async (url) =>
     new Response(await readFile(new URL(`../public/data/${url.slice(dataUrl.length)}`, import.meta.url), 'utf8'))
-  const overview = await createPlacesLoader(fetcher)()
+  const [overview, categories, files] = await Promise.all([
+    createPlacesLoader(fetcher)(),
+    createCategoriesLoader(fetcher)(),
+    readdir(new URL('../public/data/markers/', import.meta.url)),
+  ])
   const load = createPlaceDetailsLoader(fetcher)
   const details = await Promise.all(overview.map(({ id }) => load(id)))
 
+  assert.equal(overview.length, 22)
+  assert.equal(categories.length, 4)
+  assert.deepEqual(
+    files.filter((file) => file.endsWith('.json') && file !== 'overview.json').sort(),
+    overview.map(({ id }) => `${id}.json`).sort(),
+  )
+  assert.deepEqual(new Set(overview.flatMap(({ categoryIds }) => categoryIds)), new Set(categories.map(({ id }) => id)))
   assert.equal(details.length, overview.length)
   for (const [index, detail] of details.entries()) {
+    assert.equal(overview[index].categoryIds.length, 1)
     assert.equal(detail.id, overview[index].id)
     assert.deepEqual(detail.coordinates, overview[index].coordinates)
+    assert.deepEqual(detail.categoryIds, overview[index].categoryIds)
     assert.deepEqual(
       detail.categories.map(({ id }) => id),
       detail.categoryIds,
@@ -244,5 +258,45 @@ test('all repository detail files resolve their overview IDs and categories', as
       assert.ok(detail.description[locale])
       assert.ok(detail.categories.every((category) => category.title[locale] && category.description[locale]))
     }
+  }
+  const { features } = markerData({ mode: 'bounds', places: overview })
+  assert.ok(features.every(({ properties }) => properties.color !== '#64748b'))
+})
+
+test('public categories loader shares its promise and snapshot with the detail loader', async () => {
+  const { createCategoriesLoader } = await import('../lib/places.ts')
+  let categoryRequests = 0
+  const fetcher = async (url) => {
+    if (url.endsWith('categories.json')) {
+      categoryRequests++
+      return Response.json(categories)
+    }
+    return Response.json(place({ description }))
+  }
+  const loadCategories = createCategoriesLoader(fetcher)
+  const loadDetails = createPlaceDetailsLoader(fetcher, loadCategories)
+  assert.strictEqual(loadCategories(), loadCategories())
+  const [loaded, detail] = await Promise.all([loadCategories(), loadDetails('karl-marx-monument')])
+  assert.deepEqual(loaded, categories)
+  assert.strictEqual(detail.categories[0], loaded[0])
+  assert.equal(categoryRequests, 1)
+})
+
+test('public categories loader validates and caches failures with a descriptive source', async () => {
+  const { createCategoriesLoader } = await import('../lib/places.ts')
+  for (const response of [
+    Response.json([categories[0], categories[0]]),
+    new Response('{broken'),
+    new Response('', { status: 503 }),
+  ]) {
+    let requests = 0
+    const load = createCategoriesLoader(async () => {
+      requests++
+      return response
+    })
+    const promise = load()
+    await assert.rejects(promise, /Could not load place data from .*categories.json/)
+    assert.strictEqual(load(), promise)
+    assert.equal(requests, 1)
   }
 })

@@ -1,6 +1,6 @@
 [
   {
-    "categoryIds": ["history", "culture"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9252, 50.8342],
     "detailZoom": 15,
     "id": "karl-marx-monument",
@@ -10,7 +10,7 @@
     }
   },
   {
-    "categoryIds": ["culture", "history"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9259, 50.8377],
     "detailZoom": 15,
     "id": "theaterplatz",
@@ -30,7 +30,7 @@
     }
   },
   {
-    "categoryIds": ["history", "culture"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9036, 50.8238],
     "detailZoom": 15,
     "id": "industrial-museum",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "categoryIds": ["history"],
+    "categoryIds": ["culture"],
     "coordinates": [12.8998, 50.8339],
     "detailZoom": 14,
     "id": "kassberg",
@@ -60,7 +60,7 @@
     }
   },
   {
-    "categoryIds": ["workspace"],
+    "categoryIds": ["citylife"],
     "coordinates": [12.9298, 50.8136],
     "detailZoom": 15,
     "id": "tu-campus",
@@ -80,7 +80,7 @@
     }
   },
   {
-    "categoryIds": ["food", "history"],
+    "categoryIds": ["citylife"],
     "coordinates": [12.9207, 50.8332],
     "detailZoom": 15,
     "id": "markthalle",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "categoryIds": ["workspace", "history"],
+    "categoryIds": ["citylife"],
     "coordinates": [12.9018, 50.8207],
     "detailZoom": 15,
     "id": "wirkbau",
@@ -110,7 +110,7 @@
     }
   },
   {
-    "categoryIds": ["culture", "workspace"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9241, 50.833],
     "detailZoom": 15,
     "id": "stadtbibliothek",
@@ -120,7 +120,7 @@
     }
   },
   {
-    "categoryIds": ["nature", "culture"],
+    "categoryIds": ["nature"],
     "coordinates": [12.9089, 50.852],
     "detailZoom": 14,
     "id": "kuechwald",
@@ -130,7 +130,7 @@
     }
   },
   {
-    "categoryIds": ["nature", "history"],
+    "categoryIds": ["nature"],
     "coordinates": [12.8154, 50.8331],
     "detailZoom": 14,
     "id": "rabenstein-castle",
@@ -150,7 +150,7 @@
     }
   },
   {
-    "categoryIds": ["history", "culture"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9511, 50.8276],
     "detailZoom": 15,
     "id": "schlossbergmuseum",
@@ -160,7 +160,7 @@
     }
   },
   {
-    "categoryIds": ["mobility", "nature"],
+    "categoryIds": ["mobility"],
     "coordinates": [12.9125, 50.8299],
     "detailZoom": 14,
     "id": "chemnitz-river",
@@ -170,7 +170,7 @@
     }
   },
   {
-    "categoryIds": ["culture", "food"],
+    "categoryIds": ["culture"],
     "coordinates": [12.9237, 50.8322],
     "detailZoom": 15,
     "id": "markt",
@@ -180,7 +180,7 @@
     }
   },
   {
-    "categoryIds": ["workspace", "culture"],
+    "categoryIds": ["citylife"],
     "coordinates": [12.905, 50.822],
     "detailZoom": 15,
     "id": "spinnerei",
@@ -190,7 +190,7 @@
     }
   },
   {
-    "categoryIds": ["mobility", "history"],
+    "categoryIds": ["mobility"],
     "coordinates": [12.9168, 50.8295],
     "detailZoom": 15,
     "id": "zentralhaltestelle",
@@ -200,7 +200,7 @@
     }
   },
   {
-    "categoryIds": ["food", "culture"],
+    "categoryIds": ["citylife"],
     "coordinates": [12.9197, 50.8318],
     "detailZoom": 15,
     "id": "rosenhof",
@@ -210,7 +210,7 @@
     }
   },
   {
-    "categoryIds": ["nature", "workspace"],
+    "categoryIds": ["nature"],
     "coordinates": [12.9334, 50.8062],
     "detailZoom": 14,
     "id": "reichenhain-campus-edge",
