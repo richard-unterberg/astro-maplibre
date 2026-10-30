@@ -18,6 +18,9 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.33.2",
+  "dependencies": {
+    "maplibre-gl": "^6.16.0"
+  },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@biomejs/biome": "^2.6.4",

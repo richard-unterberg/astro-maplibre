@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css'
-import { fade } from 'astro:transitions'
 import Header from '@components/Header.astro'
 import MetaHead from '@components/MetaHead.astro'
 import { resolveLocale } from '@lib/i18n'
@@ -14,7 +13,7 @@ const description = Astro.props.description || 'astro meets maplibre'
 const lang = resolveLocale(Astro.currentLocale)
 ---
 
-<html lang={lang} data-theme="dark">
+<html lang={lang} data-theme="dark" transition:animate="none">
   <MetaHead
     title={title}
     description={description}
@@ -25,11 +24,5 @@ const lang = resolveLocale(Astro.currentLocale)
     <main class="prose-container relative h-[calc(100dvh-16*var(--spacing))]">
       <slot />
     </main>
-
-    <script>
-    document.addEventListener('astro:before-swap', (e) => {
-      e.viewTransition?.skipTransition()
-    })
-    </script>
   </body>
 </html>

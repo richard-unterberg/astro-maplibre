@@ -1,0 +1,17 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { type Locale, locales, resolveLocale } from '@lib/i18n'
+import { ThemePreference } from '@styles/themeAppearance'
+
+const currentLocale = resolveLocale(Astro.currentLocale)
+const localeRoot = getRelativeLocaleUrl(currentLocale)
+const pagePath = Astro.url.pathname.slice(localeRoot.length)
+---
+
+<ul class="grid grid-cols-2 divide-x divide-base-muted-light h-6">
+  {Object.entries(ThemePreference).map((item) => (
+    <li>
+      <button type="button">{item}</button>
+    </li>
+  ))}
+</ul>
