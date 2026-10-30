@@ -1,17 +1,27 @@
 {
   "id": "2026-10-30T15-37-55-675Z",
   "startedAt": "2026-10-30T15:37:57.032Z",
-  "status": "running",
+  "endedAt": "2026-10-30T15:39:11.080Z",
+  "status": "done",
   "intent": "/update-tickets",
   "driver": "codex",
   "model": "gpt-6-luna",
+  "effort": "low",
+  "branch": "agent-2026-10-30T15-37-55-675Z",
+  "contextTokens": 28854,
   "caller": {
     "runner": {
       "host": "debian-4gb-nbg1-4",
       "pid": 3633032,
-      "publish": "commit"
+      "publish": "commit",
+      "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70"
     },
+    "pid": 3633032,
     "host": "debian-4gb-nbg1-4",
-    "publish": "commit"
+    "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70",
+    "publish": "commit",
+    "kind": "prompt",
+    "workspace": "/home/openagent/projects/astro-maplibre/.branches/agent-2026-10-30T15-37-55-675Z",
+    "sessionId": "01a18d75-ebe8-73e2-a262-f5bc12f7bf6b"
   }
 }
