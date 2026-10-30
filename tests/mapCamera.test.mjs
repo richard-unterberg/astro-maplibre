@@ -37,15 +37,42 @@ function setup() {
 test('padding measures map intersections, excluding the header and combining overlays once', () => {
   const map = rect(0, 110, 1000, 800)
   assert.deepEqual(measurePadding(map, []), { top: 32, bottom: 32, left: 32, right: 32 })
-  const overlays = [rect(0, 0, 1000, 110), rect(0, 610, 1000, 300), rect(0, 700, 1000, 210), rect(1100, 110, 100, 800)]
+  const overlays = [
+    rect(0, 0, 1000, 110),
+    rect(0, 610, 1000, 300),
+    rect(0, 700, 1000, 210),
+    rect(1100, 110, 100, 800),
+  ].map((rect) => ({ rect, edge: 'bottom' }))
   assert.deepEqual(measurePadding(map, overlays), padding)
-  assert.equal(measurePadding(map, [rect(0, 814, 1000, 64)]).bottom, 96 + CAMERA_GAP)
+  assert.equal(measurePadding(map, [{ rect: rect(0, 814, 1000, 64), edge: 'bottom' }]).bottom, 96 + CAMERA_GAP)
+})
+
+test('visible top navigation adds its map overlap while hidden, absent, and outside navigation add no padding', () => {
+  const map = rect(0, 110, 1000, 800)
+  const panel = { rect: rect(0, 610, 1000, 300), edge: 'bottom' }
+  const navigation = (rect) => ({ rect, edge: 'top' })
+  assert.deepEqual(
+    measurePadding(map, [panel, navigation(rect(0, 100, 1000, 66)), navigation(rect(0, 110, 1000, 40))]),
+    { ...padding, top: 88 },
+  )
+  for (const hidden of [rect(0, 0, 0, 0), rect(0, 110, 0, 56), rect(0, 110, 1000, 0)]) {
+    assert.deepEqual(measurePadding(map, [panel, navigation(hidden)]), padding)
+  }
+  assert.deepEqual(
+    measurePadding(map, [panel, navigation(rect(0, 0, 1000, 110)), navigation(rect(1100, 110, 100, 56))]),
+    padding,
+  )
+  assert.deepEqual(measurePadding(map, [panel]), padding)
 })
 
 test('a short viewport retains positive camera space even if a panel covers it', () => {
-  const result = measurePadding(rect(0, 0, 100, 50), [rect(0, -10, 100, 100)])
-  assert.ok(result.top + result.bottom < 50)
-  assert.ok(result.left + result.right < 100)
+  const panel = { rect: rect(0, -10, 100, 100), edge: 'bottom' }
+  for (const overlays of [[panel], [panel, { rect: rect(0, 0, 100, 56), edge: 'top' }]]) {
+    const result = measurePadding(rect(0, 0, 100, 50), overlays)
+    assert.ok(result.top >= 0 && result.bottom >= 0)
+    assert.ok(result.top + result.bottom < 50)
+    assert.ok(result.left + result.right < 100)
+  }
 })
 
 test('detail camera uses measured padding once and retains user zoom on layout changes', () => {

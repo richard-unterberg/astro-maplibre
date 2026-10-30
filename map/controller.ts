@@ -6,6 +6,7 @@ import type { MapView } from './view.ts'
 export function createMapController(map: MapLibreMap, navigate: (url: string) => Promise<void>) {
   let view: MapView | undefined
   let wrapper: HTMLElement | undefined
+  let occluders: HTMLElement[] = []
   let frame = 0
   let changed = false
   let animate = false
@@ -24,10 +25,12 @@ export function createMapController(map: MapLibreMap, navigate: (url: string) =>
     if (destroyed || !view || !wrapper?.isConnected) return
     const rect = map.getContainer().getBoundingClientRect()
     if (rect.width <= 0 || rect.height <= 0) return
-    const occluders = [...wrapper.querySelectorAll<HTMLElement>('[data-map-occluder]')]
     const padding = measurePadding(
       rect,
-      occluders.map((element) => element.getBoundingClientRect()),
+      occluders.map((element) => ({
+        rect: element.getBoundingClientRect(),
+        edge: element.dataset.mapOccluder === 'top' ? 'top' : 'bottom',
+      })),
     )
     const layout = JSON.stringify([rect.width, rect.height, padding])
     if (!changed && layout === lastLayout) return
@@ -87,13 +90,14 @@ export function createMapController(map: MapLibreMap, navigate: (url: string) =>
         view = nextView
       }
       wrapper = nextWrapper
+      occluders = [...wrapper.ownerDocument.querySelectorAll<HTMLElement>('[data-map-occluder]')]
       changed = true
       animate = shouldAnimate
       navigating = false
       clearPointer()
       observer.disconnect()
       observer.observe(map.getContainer())
-      for (const element of wrapper.querySelectorAll('[data-map-occluder]')) observer.observe(element)
+      for (const element of occluders) observer.observe(element)
       if (map.isStyleLoaded() || map.getLayer(MARKER_HIT_LAYER)) restoreMarkers()
       schedule()
     },
@@ -110,6 +114,7 @@ export function createMapController(map: MapLibreMap, navigate: (url: string) =>
       clearPointer()
       view = undefined
       wrapper = undefined
+      occluders = []
     },
   }
 }

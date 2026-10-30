@@ -5,17 +5,23 @@ export const CAMERA_GAP = 32
 export const BOUNDS_MAX_ZOOM = 15
 
 type Rect = Pick<DOMRectReadOnly, 'top' | 'bottom' | 'left' | 'right' | 'height' | 'width'>
+type Occluder = { rect: Rect; edge: 'top' | 'bottom' }
 
-export function measurePadding(map: Rect, occluders: Rect[]): PaddingOptions {
-  let covered = 0
-  for (const rect of occluders) {
+export function measurePadding(map: Rect, occluders: Occluder[]): PaddingOptions {
+  const covered = { top: 0, bottom: 0 }
+  for (const { rect, edge } of occluders) {
     if (rect.width <= 0 || rect.height <= 0 || rect.right <= map.left || rect.left >= map.right) continue
     const overlap = Math.min(map.bottom, rect.bottom) - Math.max(map.top, rect.top)
-    if (overlap > 0) covered = Math.max(covered, map.bottom - Math.max(map.top, rect.top))
+    if (overlap <= 0) continue
+    const depth =
+      edge === 'top' ? Math.min(map.bottom, rect.bottom) - map.top : map.bottom - Math.max(map.top, rect.top)
+    covered[edge] = Math.max(covered[edge], depth)
   }
   // Even a very short viewport must leave MapLibre a positive fitting area.
   const gap = Math.min(CAMERA_GAP, map.height / 8, map.width / 8)
-  return { top: gap, bottom: Math.min(covered + gap, map.height - gap - 1), left: gap, right: gap }
+  const total = covered.top + covered.bottom
+  const scale = total > 0 ? Math.min(1, Math.max(0, map.height - 2 * gap - 1) / total) : 1
+  return { top: covered.top * scale + gap, bottom: covered.bottom * scale + gap, left: gap, right: gap }
 }
 
 type CameraMap = Pick<MapLibreMap, 'getZoom' | 'stop' | 'easeTo' | 'fitBounds'>

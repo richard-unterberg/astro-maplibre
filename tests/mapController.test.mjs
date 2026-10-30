@@ -47,7 +47,8 @@ function setup(t, { ready = true, reduced = false } = {}) {
   const cameras = []
   const canvas = { style: {} }
   const container = { getBoundingClientRect: () => rect }
-  const wrapper = { isConnected: true, querySelectorAll: () => [] }
+  const document = { querySelectorAll: () => [] }
+  const wrapper = { isConnected: true, ownerDocument: document }
   let featureId
   const map = {
     on: (event, callback) => {
@@ -86,6 +87,7 @@ function setup(t, { ready = true, reduced = false } = {}) {
     controller,
     map,
     wrapper,
+    document,
     frames,
     cameras,
     sources,
@@ -267,8 +269,8 @@ test('clicking the selected marker does not navigate or replay the camera, while
 
 test('layout observation batches work, respects reduced motion, and never recenters on map movement', (t) => {
   const s = setup(t, { reduced: true })
-  const panel = { getBoundingClientRect: () => ({ ...rect, top: 610, height: 300 }) }
-  s.wrapper.querySelectorAll = () => [panel]
+  const panel = { dataset: {}, getBoundingClientRect: () => ({ ...rect, top: 610, height: 300 }) }
+  s.document.querySelectorAll = () => [panel]
   s.controller.setView({ mode: 'detail', selectedId: 'a', places: [first] }, s.wrapper)
   s.flush()
   assert.equal(s.cameras[0].args[0].duration, 0)
@@ -292,4 +294,34 @@ test('layout observation batches work, respects reduced motion, and never recent
   s.emit('style.load')
   s.flush()
   assert.equal(s.cameras.length, 2)
+})
+
+test('navigation outside the map wrapper is observed and responsive visibility updates its top padding', (t) => {
+  const s = setup(t)
+  let navigationRect = { ...rect, bottom: 166, height: 56 }
+  const navigation = { dataset: { mapOccluder: 'top' }, getBoundingClientRect: () => navigationRect }
+  const panel = { dataset: {}, getBoundingClientRect: () => ({ ...rect, top: 610, height: 300 }) }
+  s.document.querySelectorAll = () => [navigation, panel]
+  s.controller.setView(boundsView([first, { ...second, coordinates: [13, 51] }]), s.wrapper, false)
+  s.flush()
+  assert.ok(s.observer().elements.has(navigation))
+  assert.ok(s.observer().elements.has(panel))
+  assert.deepEqual(s.cameras[0].args[1].padding, { top: 88, bottom: 332, left: 32, right: 32 })
+
+  navigationRect = { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 }
+  s.observer().callback()
+  s.flush()
+  assert.deepEqual(s.cameras[1].args[1].padding, { top: 32, bottom: 332, left: 32, right: 32 })
+
+  navigationRect = { ...rect, bottom: 182, height: 72 }
+  s.observer().callback()
+  s.flush()
+  assert.deepEqual(s.cameras[2].args[1].padding, { top: 104, bottom: 332, left: 32, right: 32 })
+
+  s.document.querySelectorAll = () => [panel]
+  s.controller.setView({ mode: 'detail', selectedId: 'a', places: [first] }, s.wrapper)
+  s.flush()
+  assert.equal(s.observer().elements.has(navigation), false)
+  assert.deepEqual(s.cameras[3].args[0].padding, { top: 32, bottom: 332, left: 32, right: 32 })
+  s.controller.destroy()
 })

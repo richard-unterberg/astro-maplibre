@@ -33,7 +33,10 @@ const isMapPage =
     </LayoutComponent>
   </div>
   {isMapPage && (
-    <div class="lg:hidden absolute top-16 z-10 w-full left-0 bg-base-300/50 dark:bg-base-100/50">
+    <div
+      data-map-occluder="top"
+      class="lg:hidden absolute top-16 h-14 z-10 w-full left-0 bg-base-300/50 dark:bg-base-100/50"
+    >
       <nav aria-label={t('categories')} class="overflow-x-auto p-3">
         <ul class="flex gap-2 w-full justify-center">
           {categories.map((category) => (
@@ -44,8 +47,8 @@ const isMapPage =
                   activeCategory === category.id ? 'page' : undefined
                 }
                 class:list={[
-                  'btn btn-sm',
-                  activeCategory === category.id ? 'btn-neutral' : 'btn-ghost',
+                  'btn btn-xs sm:btn-sm',
+                  activeCategory === category.id ? 'btn-neutral' : 'btn-soft',
                 ]}
               >
                 {category.title[lang]}
