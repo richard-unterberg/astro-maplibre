@@ -3,11 +3,11 @@ export type Locale = (typeof locales)[number]
 
 export const defaultLocale = 'en' satisfies Locale
 
-export function resolveLocale(locale: string | undefined): Locale {
+export const resolveLocale = (locale: string | undefined): Locale => {
   return locales.find((supportedLocale) => supportedLocale === locale) ?? defaultLocale
 }
 
-export function getLocaleStaticPaths() {
+export const getLocaleStaticPaths = () => {
   return locales.map((locale) => ({
     params: { locale: locale === defaultLocale ? undefined : locale },
   }))
@@ -121,7 +121,7 @@ const dictionary: Dictionaries = {
   },
 }
 
-function readTranslation(source: object, key: string): string | undefined {
+const readTranslation = (source: object, key: string): string | undefined => {
   let value: unknown = source
 
   for (const segment of key.split('.')) {
@@ -132,7 +132,7 @@ function readTranslation(source: object, key: string): string | undefined {
   return typeof value === 'string' ? value : undefined
 }
 
-export function createTranslator<T extends object>(fallback: T, localized: PartialDictionary<T>) {
+const createTranslator = <T extends object>(fallback: T, localized: PartialDictionary<T>) => {
   return function t(key: TranslationKey<T>): string {
     const translation = readTranslation(localized, key) ?? readTranslation(fallback, key)
     if (translation === undefined) throw new Error(`Missing translation: ${key}`)
@@ -140,6 +140,6 @@ export function createTranslator<T extends object>(fallback: T, localized: Parti
   }
 }
 
-export function useTranslations(locale: Locale) {
+export const useTranslations = (locale: Locale) => {
   return createTranslator<Dictionary>(dictionary[defaultLocale], dictionary[locale])
 }

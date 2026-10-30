@@ -10,10 +10,7 @@ export type MapView = { places: MapPlace[] } & (
   | { mode: 'detail'; selectedId: string }
 )
 
-export function filterPlaces<T extends Pick<PlaceOverview, 'id' | 'categoryIds'>>(
-  places: T[],
-  categoryId: string,
-): T[] {
+export const filterPlaces = <T extends Pick<PlaceOverview, 'id' | 'categoryIds'>>(places: T[], categoryId: string): T[] => {
   const seen = new Set<string>()
   return places.filter((place) => {
     if (!place.categoryIds.includes(categoryId) || seen.has(place.id)) return false
@@ -22,7 +19,7 @@ export function filterPlaces<T extends Pick<PlaceOverview, 'id' | 'categoryIds'>
   })
 }
 
-export function getBounds(places: Pick<PlaceOverview, 'coordinates'>[]): Bounds | undefined {
+export const getBounds = (places: Pick<PlaceOverview, 'coordinates'>[]): Bounds | undefined => {
   if (!places.length) return undefined
   const longitudes = places.map(({ coordinates }) => coordinates[0])
   const latitudes = places.map(({ coordinates }) => coordinates[1])
@@ -39,7 +36,7 @@ const colors: Record<string, string> = {
   citylife: '#be123c',
 }
 
-export function markerData(view: MapView) {
+export const markerData = (view: MapView) => {
   return {
     type: 'FeatureCollection' as const,
     features: view.places.map((place) => ({

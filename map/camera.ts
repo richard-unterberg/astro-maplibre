@@ -1,13 +1,13 @@
 import type { Map as MapLibreMap, PaddingOptions } from 'maplibre-gl'
 import { getBounds, type MapView } from './view.ts'
 
-export const CAMERA_GAP = 32
-export const BOUNDS_MAX_ZOOM = 15
+const CAMERA_GAP = 32
+const BOUNDS_MAX_ZOOM = 15
 
 type Rect = Pick<DOMRectReadOnly, 'top' | 'bottom' | 'left' | 'right' | 'height' | 'width'>
 type Occluder = { rect: Rect; edge: 'top' | 'bottom' }
 
-export function measurePadding(map: Rect, occluders: Occluder[]): PaddingOptions {
+export const measurePadding = (map: Rect, occluders: Occluder[]): PaddingOptions => {
   const covered = { top: 0, bottom: 0 }
   for (const { rect, edge } of occluders) {
     if (rect.width <= 0 || rect.height <= 0 || rect.right <= map.left || rect.left >= map.right) continue
@@ -26,7 +26,7 @@ export function measurePadding(map: Rect, occluders: Occluder[]): PaddingOptions
 
 type CameraMap = Pick<MapLibreMap, 'getZoom' | 'stop' | 'easeTo' | 'fitBounds'>
 
-export function applyCamera(map: CameraMap, view: MapView, padding: PaddingOptions, animate: boolean, resize = false) {
+export const applyCamera = (map: CameraMap, view: MapView, padding: PaddingOptions, animate: boolean, resize = false) => {
   const options = { padding, duration: animate ? 450 : 0, bearing: 0, pitch: 0 }
   map.stop()
   // Preserve the visible camera padding so transitions start without a jump.

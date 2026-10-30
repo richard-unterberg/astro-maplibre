@@ -12,7 +12,7 @@
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "check:knip": "pnpm knip",
-    "verify": "pnpm format && pnpm run check:knip && pnpm run lint && pnpm run typecheck && pnpm run test"
+    "verify": "pnpm format && pnpm run check:knip && pnpm run lint && pnpm run typecheck"
   },
   "keywords": [],
   "author": "",

@@ -43,9 +43,9 @@ const categoriesSchema = z
 
 export type PlaceOverview = z.infer<typeof placeOverviewSchema>
 export type Category = z.infer<typeof categorySchema>
-export type Place = z.infer<typeof placeSchema> & { categories: Category[] }
+type Place = z.infer<typeof placeSchema> & { categories: Category[] }
 
-async function loadData<T>(url: string, schema: z.ZodType<T>, fetcher: typeof fetch): Promise<T> {
+const loadData = async <T>(url: string, schema: z.ZodType<T>, fetcher: typeof fetch): Promise<T> => {
   try {
     const response = await fetcher(url, {
       headers: { Accept: 'application/json' },
@@ -61,7 +61,7 @@ async function loadData<T>(url: string, schema: z.ZodType<T>, fetcher: typeof fe
   }
 }
 
-export function createPlacesLoader(fetcher: typeof fetch = fetch) {
+const createPlacesLoader = (fetcher: typeof fetch = fetch) => {
   let snapshot: Promise<PlaceOverview[]> | undefined
 
   // Alle Seiten dieses Builds verwenden denselben validierten Datenstand.
@@ -71,7 +71,7 @@ export function createPlacesLoader(fetcher: typeof fetch = fetch) {
   }
 }
 
-export function createCategoriesLoader(fetcher: typeof fetch = fetch) {
+const createCategoriesLoader = (fetcher: typeof fetch = fetch) => {
   let snapshot: Promise<Category[]> | undefined
   return () => {
     snapshot ??= loadData(`${dataUrl}categories.json`, categoriesSchema, fetcher)
@@ -79,10 +79,7 @@ export function createCategoriesLoader(fetcher: typeof fetch = fetch) {
   }
 }
 
-export function createPlaceDetailsLoader(
-  fetcher: typeof fetch = fetch,
-  loadCategories = createCategoriesLoader(fetcher),
-) {
+const createPlaceDetailsLoader = (fetcher: typeof fetch = fetch, loadCategories = createCategoriesLoader(fetcher)) => {
   const snapshots = new Map<string, Promise<Place>>()
 
   async function loadPlace(id: string): Promise<Place> {
@@ -117,7 +114,7 @@ export function createPlaceDetailsLoader(
   }
 }
 
-export function createPlaceDataFetcher(fetcher: typeof fetch = fetch): typeof fetch {
+const createPlaceDataFetcher = (fetcher: typeof fetch = fetch): typeof fetch => {
   let revision: Promise<string> | undefined
 
   return async (input, options) => {

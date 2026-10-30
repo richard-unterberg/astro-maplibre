@@ -4,7 +4,7 @@ import { type MapView, markerData } from './view.ts'
 export const MARKER_HIT_LAYER = 'places-hit'
 const sourceId = 'places'
 
-export function syncMarkers(map: MapLibreMap, view: MapView) {
+export const syncMarkers = (map: MapLibreMap, view: MapView) => {
   if (!map.getSource(sourceId)) {
     map.addSource(sourceId, { type: 'geojson', data: markerData(view) })
   } else {

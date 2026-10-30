@@ -3,7 +3,7 @@ import { applyCamera, measurePadding } from './camera.ts'
 import { MARKER_HIT_LAYER, syncMarkers } from './markers.ts'
 import type { MapView } from './view.ts'
 
-export function createMapController(map: MapLibreMap, navigate: (url: string) => Promise<void>) {
+export const createMapController = (map: MapLibreMap, navigate: (url: string) => Promise<void>) => {
   let view: MapView | undefined
   let wrapper: HTMLElement | undefined
   let occluders: HTMLElement[] = []
