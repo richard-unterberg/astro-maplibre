@@ -1,0 +1,20 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import { resolveLocale, useTranslations } from '@lib/i18n'
+import { List } from '@lucide/astro'
+
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+
+const url = Astro.props.url
+---
+
+<div
+  data-map-occluder
+  class="p-0 absolute bottom-4 left-0 w-full h-16 flex items-center justify-center"
+>
+  <a class="btn btn-neutral" href={getRelativeLocaleUrl(lang, url)}>
+    <List class="size-4" stroke-width={3} />
+    {t('showAllEntries')}</a
+  >
+</div>

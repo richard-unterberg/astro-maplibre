@@ -1,5 +1,5 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n'
+import ShowAllEntries from '@components/ShowAllEntries.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
@@ -20,12 +20,6 @@ const places = await getPlaces()
       fallbackBounds: overviewBounds(places),
     }}
   >
-    <div data-map-occluder class="p-0 absolute bottom-0 left-0 w-full h-16">
-      <a
-        class="btn btn-neutral"
-        href={getRelativeLocaleUrl(lang, 'map/overview')}
-        >{t('overview')}</a
-      >
-    </div>
+    <ShowAllEntries url="map/overview" />
   </MapShell>
 </Shell>

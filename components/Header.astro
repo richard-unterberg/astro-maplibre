@@ -12,7 +12,6 @@ const homeUrl = getRelativeLocaleUrl(lang)
 const t = useTranslations(lang)
 const categories: Category[] = await getCategories()
 const activeCategory = Astro.params.category
-const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
 
 const isMapPage =
   Astro.url.pathname.includes('/map/') ||

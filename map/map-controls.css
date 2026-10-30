@@ -86,7 +86,7 @@
 }
 
 #map .maplibregl-ctrl button:not(:disabled):active,
-.maplibre-vike-map
+#map
   .maplibregl-ctrl-attrib.maplibregl-compact-show
   .maplibregl-ctrl-attrib-button {
   background-color: var(--map-control-hover);

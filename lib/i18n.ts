@@ -20,6 +20,7 @@ type Page = {
 
 interface Dictionary {
   all: string
+  showAllEntries: string
   back: string
   categories: string
   chemnitzLocation: string
@@ -54,6 +55,7 @@ const dictionary: Dictionaries = {
   de: {
     all: 'Alle',
     back: 'Zurueck',
+    showAllEntries: 'Alle Einträge zeigen',
     categories: 'Kategorien',
     chemnitzLocation: 'Chemnitzer Ort',
     chemnitzMap: 'Chemnitz-Karte',
@@ -83,6 +85,7 @@ const dictionary: Dictionaries = {
     all: 'All',
     back: 'Back',
     categories: 'Categories',
+    showAllEntries: 'Show all Entries',
     chemnitzLocation: 'Chemnitz location',
     chemnitzMap: 'Chemnitz map',
     closeCategoryMenu: 'Close category menu',
