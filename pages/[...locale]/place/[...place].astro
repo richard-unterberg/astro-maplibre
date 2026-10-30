@@ -4,6 +4,7 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { localizeMapPlaces } from '@lib/mapData'
 import { getPlace, getPlaces } from '@lib/places'
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 
@@ -13,11 +14,11 @@ export const getStaticPaths = (async () => {
   const places = await getPlaces()
   return (
     await Promise.all(
-      places.map(async ({ id }) => {
-        const place = await getPlace(id)
+      places.map(async (mapPlace) => {
+        const place = await getPlace(mapPlace.id)
         return getLocaleStaticPaths().map(({ params }) => ({
-          params: { ...params, place: id },
-          props: { place },
+          params: { ...params, place: mapPlace.id },
+          props: { place, mapPlace },
         }))
       }),
     )
@@ -26,7 +27,7 @@ export const getStaticPaths = (async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { place } = Astro.props
+const { place, mapPlace } = Astro.props
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const title = place.title[lang]
@@ -37,14 +38,15 @@ const mapUrl = getRelativeLocaleUrl(lang, 'map')
 
 <Shell title={title} description={description}>
   <MapShell
-    place={{
-      title,
-      coordinates: place.coordinates,
-      detailZoom: place.detailZoom,
+    view={{
+      mode: 'detail',
+      selectedId: place.id,
+      places: localizeMapPlaces([mapPlace], lang),
     }}
   >
     <div
-      class="h-1/2 absolute bottom-0 left-0 bg-base-100 w-full z-4 overflow-y-auto"
+      data-map-occluder
+      class="max-h-1/2 absolute bottom-0 left-0 bg-base-100 w-full z-4 overflow-y-auto"
     >
       <LayoutComponent>
         <a href={mapUrl}>{t('back')}: {t('map')}</a>
@@ -61,7 +63,9 @@ const mapUrl = getRelativeLocaleUrl(lang, 'map')
           <ul>
             {place.categories.map((category) => (
               <li>
-                <strong>{category.title[lang]}</strong>
+                <a href={getRelativeLocaleUrl(lang, `category/${category.id}`)}>
+                  {category.title[lang]}
+                </a>
                 <p>{category.description[lang]}</p>
               </li>
             ))}

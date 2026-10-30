@@ -3,20 +3,20 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import '@map/map-controls.css'
 
 import { getMapStyleUrl } from '@map/mapStyles'
-import type { PlaceTarget } from '@map/placeFocus'
+import type { MapView } from '@map/view'
 import { ThemePreference } from '@styles/themeAppearance'
 
 interface Props {
-  place?: PlaceTarget
+  view: MapView
 }
 
-const { place } = Astro.props
+const { view } = Astro.props
 ---
 
 <div
   class="h-full relative"
   data-map-view
-  data-map-place={place && JSON.stringify(place)}
+  data-map-config={JSON.stringify(view)}
 >
   <div
     id="map"
@@ -30,11 +30,12 @@ const { place } = Astro.props
 </div>
 
 <script>
-import { createPlaceFocus, type PlaceTarget } from '@map/placeFocus'
+import { navigate } from 'astro:transitions/client'
+import { createMapController } from '@map/controller'
+import type { MapView } from '@map/view'
 import { getCurrentThemePreference } from '@styles/themeAppearance'
 import {
   Map as MapLibreMap,
-  Marker,
   NavigationControl,
   setWorkerUrl,
 } from 'maplibre-gl'
@@ -44,29 +45,26 @@ setWorkerUrl(mapWorkerUrl)
 
 let map: MapLibreMap | undefined
 let themeObserver: MutationObserver | undefined
-let placeFocus: ReturnType<typeof createPlaceFocus> | undefined
+let controller: ReturnType<typeof createMapController> | undefined
 
 document.addEventListener('astro:page-load', () => {
   const container = document.querySelector<HTMLElement>('[data-map]')
-  const placeData =
-    document.querySelector<HTMLElement>('[data-map-view]')?.dataset.mapPlace
-  const place: PlaceTarget | undefined = placeData
-    ? JSON.parse(placeData)
-    : undefined
+  const wrapper = document.querySelector<HTMLElement>('[data-map-view]')
+  const config = wrapper?.dataset.mapConfig
+  const view: MapView | undefined = config ? JSON.parse(config) : undefined
 
   if (map && map.getContainer() === container) {
-    map.resize()
-    placeFocus?.setPlace(place)
+    if (view && wrapper) controller?.setView(view, wrapper)
     return
   }
 
   themeObserver?.disconnect()
-  placeFocus?.destroy()
-  placeFocus = undefined
+  controller?.destroy()
+  controller = undefined
   map?.remove()
   map = undefined
 
-  if (!container) return
+  if (!container || !wrapper || !view) return
 
   const lightStyle = container.dataset.mapStyleLight
   const darkStyle = container.dataset.mapStyleDark
@@ -87,14 +85,8 @@ document.addEventListener('astro:page-load', () => {
     'top-right',
   )
 
-  const activeMap = map
-  placeFocus = createPlaceFocus(activeMap, (place) => {
-    const marker = new Marker().setLngLat(place.coordinates).addTo(activeMap)
-    marker.getElement().setAttribute('role', 'img')
-    marker.getElement().setAttribute('aria-label', place.title)
-    return marker
-  })
-  placeFocus.setPlace(place, false)
+  controller = createMapController(map, navigate)
+  controller.setView(view, wrapper, false)
 
   themeObserver = new MutationObserver(() => {
     const nextTheme = getCurrentThemePreference()

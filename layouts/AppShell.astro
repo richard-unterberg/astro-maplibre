@@ -19,9 +19,9 @@ const lang = resolveLocale(Astro.currentLocale)
     description={description}
     robots={Astro.props.robots}
   />
-  <body>
+  <body class="h-dvh flex flex-col overflow-hidden">
     <Header />
-    <main class="prose-container relative h-[calc(100dvh-16*var(--spacing))]">
+    <main class="prose-container relative flex-1 min-h-0 overflow-y-auto">
       <slot />
     </main>
   </body>

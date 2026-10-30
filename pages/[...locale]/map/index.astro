@@ -4,15 +4,24 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { localizeMapPlaces, overviewBounds } from '@lib/mapData'
+import { getPlaces } from '@lib/places'
 
 export const getStaticPaths = getLocaleStaticPaths
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+const places = await getPlaces()
 ---
 
 <Shell title={t('mapPage.title')} description={t('mapPage.description')}>
-  <MapShell>
-    <div class="p-0 absolute bottom-8 left-0 w-dvw h-16">
+  <MapShell
+    view={{
+      mode: 'bounds',
+      places: localizeMapPlaces(places, lang),
+      fallbackBounds: overviewBounds(places),
+    }}
+  >
+    <div data-map-occluder class="p-0 absolute bottom-8 left-0 w-full h-16">
       <LayoutComponent>
         <a class="btn" href={getRelativeLocaleUrl(lang, 'map/overview')}
           >{t('overview')}</a

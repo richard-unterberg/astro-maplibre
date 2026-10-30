@@ -246,3 +246,41 @@ test('all repository detail files resolve their overview IDs and categories', as
     }
   }
 })
+
+test('public categories loader shares its promise and snapshot with the detail loader', async () => {
+  const { createCategoriesLoader } = await import('../lib/places.ts')
+  let categoryRequests = 0
+  const fetcher = async (url) => {
+    if (url.endsWith('categories.json')) {
+      categoryRequests++
+      return Response.json(categories)
+    }
+    return Response.json(place({ description }))
+  }
+  const loadCategories = createCategoriesLoader(fetcher)
+  const loadDetails = createPlaceDetailsLoader(fetcher, loadCategories)
+  assert.strictEqual(loadCategories(), loadCategories())
+  const [loaded, detail] = await Promise.all([loadCategories(), loadDetails('karl-marx-monument')])
+  assert.deepEqual(loaded, categories)
+  assert.strictEqual(detail.categories[0], loaded[0])
+  assert.equal(categoryRequests, 1)
+})
+
+test('public categories loader validates and caches failures with a descriptive source', async () => {
+  const { createCategoriesLoader } = await import('../lib/places.ts')
+  for (const response of [
+    Response.json([categories[0], categories[0]]),
+    new Response('{broken'),
+    new Response('', { status: 503 }),
+  ]) {
+    let requests = 0
+    const load = createCategoriesLoader(async () => {
+      requests++
+      return response
+    })
+    const promise = load()
+    await assert.rejects(promise, /Could not load place data from .*categories.json/)
+    assert.strictEqual(load(), promise)
+    assert.equal(requests, 1)
+  }
+})

@@ -38,8 +38,9 @@ const categoriesSchema = z
     message: 'Duplicate category ID',
   })
 
-type PlaceOverview = z.infer<typeof placeOverviewSchema>
-type Place = z.infer<typeof placeSchema> & { categories: z.infer<typeof categorySchema>[] }
+export type PlaceOverview = z.infer<typeof placeOverviewSchema>
+export type Category = z.infer<typeof categorySchema>
+export type Place = z.infer<typeof placeSchema> & { categories: Category[] }
 
 async function loadData<T>(url: string, schema: z.ZodType<T>, fetcher: typeof fetch): Promise<T> {
   try {
@@ -67,20 +68,29 @@ export function createPlacesLoader(fetcher: typeof fetch = fetch) {
   }
 }
 
-export function createPlaceDetailsLoader(fetcher: typeof fetch = fetch) {
+export function createCategoriesLoader(fetcher: typeof fetch = fetch) {
+  let snapshot: Promise<Category[]> | undefined
+  return () => {
+    snapshot ??= loadData(`${dataUrl}categories.json`, categoriesSchema, fetcher)
+    return snapshot
+  }
+}
+
+export function createPlaceDetailsLoader(
+  fetcher: typeof fetch = fetch,
+  loadCategories = createCategoriesLoader(fetcher),
+) {
   const snapshots = new Map<string, Promise<Place>>()
-  let categoriesSnapshot: Promise<z.infer<typeof categoriesSchema>> | undefined
 
   async function loadPlace(id: string): Promise<Place> {
     const url = `${dataUrl}markers/${id}.json`
-    categoriesSnapshot ??= loadData(`${dataUrl}categories.json`, categoriesSchema, fetcher)
     const [place, categories] = await Promise.all([
       loadData(
         url,
         placeSchema.refine((place) => place.id === id, { message: `Expected place ID: ${id}` }),
         fetcher,
       ),
-      categoriesSnapshot,
+      loadCategories(),
     ])
 
     return {
@@ -105,4 +115,5 @@ export function createPlaceDetailsLoader(fetcher: typeof fetch = fetch) {
 }
 
 export const getPlaces = createPlacesLoader()
-export const getPlace = createPlaceDetailsLoader()
+export const getCategories = createCategoriesLoader()
+export const getPlace = createPlaceDetailsLoader(fetch, getCategories)

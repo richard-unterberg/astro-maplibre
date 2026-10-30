@@ -1,0 +1,60 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import LayoutComponent from '@components/LayoutComponent.astro'
+import Shell from '@layouts/AppShell.astro'
+import MapShell from '@layouts/MapShell.astro'
+import { getLocaleStaticPaths, resolveLocale } from '@lib/i18n'
+import { localizeMapPlaces, overviewBounds } from '@lib/mapData'
+import { getCategories, getPlaces } from '@lib/places'
+import { filterPlaces } from '@map/view'
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+
+export const getStaticPaths = (async () => {
+  const [categories, places] = await Promise.all([getCategories(), getPlaces()])
+  return categories.flatMap((category) =>
+    getLocaleStaticPaths().map(({ params }) => ({
+      params: { ...params, category: category.id },
+      props: {
+        category,
+        places: filterPlaces(places, category.id),
+        fallbackBounds: overviewBounds(places),
+      },
+    })),
+  )
+}) satisfies GetStaticPaths
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+const { category, places, fallbackBounds } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const title = category.title[lang]
+const description = category.description[lang]
+---
+
+<Shell title={title} description={description}>
+  <MapShell
+    view={{
+      mode: 'bounds',
+      places: localizeMapPlaces(places, lang),
+      fallbackBounds,
+    }}
+  >
+    <div
+      data-map-occluder
+      class="absolute bottom-0 left-0 w-full max-h-1/2 bg-base-100 z-4 overflow-y-auto"
+    >
+      <LayoutComponent>
+        <h1>{title}</h1>
+        <p>{description}</p>
+        <ul class="grid grid-cols-2 md:grid-cols-4">
+          {places.map((place) => (
+            <li>
+              <a href={getRelativeLocaleUrl(lang, `place/${place.id}`)}>
+                {place.title[lang]}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </LayoutComponent>
+    </div>
+  </MapShell>
+</Shell>
