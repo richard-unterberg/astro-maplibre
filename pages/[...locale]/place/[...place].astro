@@ -4,19 +4,24 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
-import { getPlaces } from '@lib/places'
+import { getPlace, getPlaces } from '@lib/places'
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 
 export const prerender = true
 
 export const getStaticPaths = (async () => {
   const places = await getPlaces()
-  return places.flatMap((place) =>
-    getLocaleStaticPaths().map(({ params }) => ({
-      params: { ...params, place: place.id },
-      props: { place },
-    })),
-  )
+  return (
+    await Promise.all(
+      places.map(async ({ id }) => {
+        const place = await getPlace(id)
+        return getLocaleStaticPaths().map(({ params }) => ({
+          params: { ...params, place: id },
+          props: { place },
+        }))
+      }),
+    )
+  ).flat()
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
@@ -26,17 +31,26 @@ const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const title = place.title[lang]
 const [longitude, latitude] = place.coordinates
-const description = `${title} – ${t('chemnitzLocation')}. ${t('coordinates')}: ${latitude}, ${longitude}.`
+const description = place.description[lang]
 const mapUrl = getRelativeLocaleUrl(lang, 'map')
 ---
 
 <Shell title={title} description={description}>
-  <MapShell>
-    <div class="h-1/2 absolute bottom-0 left-0 bg-base-100 w-full">
+  <MapShell
+    place={{
+      title,
+      coordinates: place.coordinates,
+      detailZoom: place.detailZoom,
+    }}
+  >
+    <div
+      class="h-1/2 absolute bottom-0 left-0 bg-base-100 w-full z-4 overflow-y-auto"
+    >
       <LayoutComponent>
         <a href={mapUrl}>{t('back')}: {t('map')}</a>
         <article>
           <h1>{title}</h1>
+          <p>{description}</p>
           <dl>
             <dt>{t('coordinates')} (lon, lat)</dt>
             <dd>{longitude}, {latitude}</dd>
@@ -45,14 +59,15 @@ const mapUrl = getRelativeLocaleUrl(lang, 'map')
           </dl>
           <h2>{t('categories')}</h2>
           <ul>
-            {place.categoryIds.map((categoryId) => <li>{categoryId}</li>)}
+            {place.categories.map((category) => (
+              <li>
+                <strong>{category.title[lang]}</strong>
+                <p>{category.description[lang]}</p>
+              </li>
+            ))}
           </ul>
         </article>
       </LayoutComponent>
     </div>
   </MapShell>
 </Shell>
-
-<script>
-// move our map and zoom
-</script>

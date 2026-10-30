@@ -3,10 +3,21 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import '@map/map-controls.css'
 
 import { getMapStyleUrl } from '@map/mapStyles'
+import type { PlaceTarget } from '@map/placeFocus'
 import { ThemePreference } from '@styles/themeAppearance'
+
+interface Props {
+  place?: PlaceTarget
+}
+
+const { place } = Astro.props
 ---
 
-<div class="h-full relative">
+<div
+  class="h-full relative"
+  data-map-view
+  data-map-place={place && JSON.stringify(place)}
+>
   <div
     id="map"
     class="h-full not-prose"
@@ -19,24 +30,39 @@ import { ThemePreference } from '@styles/themeAppearance'
 </div>
 
 <script>
+import { createPlaceFocus, type PlaceTarget } from '@map/placeFocus'
 import { getCurrentThemePreference } from '@styles/themeAppearance'
-import { Map as MapLibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl'
+import {
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  setWorkerUrl,
+} from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 
 setWorkerUrl(mapWorkerUrl)
 
 let map: MapLibreMap | undefined
 let themeObserver: MutationObserver | undefined
+let placeFocus: ReturnType<typeof createPlaceFocus> | undefined
 
 document.addEventListener('astro:page-load', () => {
   const container = document.querySelector<HTMLElement>('[data-map]')
+  const placeData =
+    document.querySelector<HTMLElement>('[data-map-view]')?.dataset.mapPlace
+  const place: PlaceTarget | undefined = placeData
+    ? JSON.parse(placeData)
+    : undefined
 
   if (map && map.getContainer() === container) {
     map.resize()
+    placeFocus?.setPlace(place)
     return
   }
 
   themeObserver?.disconnect()
+  placeFocus?.destroy()
+  placeFocus = undefined
   map?.remove()
   map = undefined
 
@@ -56,7 +82,19 @@ document.addEventListener('astro:page-load', () => {
     zoom: 12,
   })
 
-  map.addControl(new NavigationControl({ showZoom: true, showCompass: true }), 'top-right')
+  map.addControl(
+    new NavigationControl({ showZoom: true, showCompass: true }),
+    'top-right',
+  )
+
+  const activeMap = map
+  placeFocus = createPlaceFocus(activeMap, (place) => {
+    const marker = new Marker().setLngLat(place.coordinates).addTo(activeMap)
+    marker.getElement().setAttribute('role', 'img')
+    marker.getElement().setAttribute('aria-label', place.title)
+    return marker
+  })
+  placeFocus.setPlace(place, false)
 
   themeObserver = new MutationObserver(() => {
     const nextTheme = getCurrentThemePreference()
