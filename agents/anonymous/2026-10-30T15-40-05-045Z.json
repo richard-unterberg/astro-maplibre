@@ -1,8 +1,7 @@
 {
   "id": "2026-10-30T15-40-05-045Z",
   "startedAt": "2026-10-30T15:40:06.465Z",
-  "endedAt": "2026-10-30T16:42:01.402Z",
-  "status": "done",
+  "status": "running",
   "intent": "Work on tickets/2026-10-30_karten-bounds-kategoriennavigation-klickbare-marker.md. Do not start any other ticket.",
   "title": "Kartenmarker Kategoriennavigation Bounds",
   "driver": "codex",
@@ -13,11 +12,11 @@
   "caller": {
     "runner": {
       "host": "debian-4gb-nbg1-4",
-      "pid": 5433,
+      "pid": 125427,
       "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70",
       "publish": "commit"
     },
-    "pid": 5433,
+    "pid": 125427,
     "host": "debian-4gb-nbg1-4",
     "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70",
     "publish": "commit",
