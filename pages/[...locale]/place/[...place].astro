@@ -18,7 +18,7 @@ export const getStaticPaths = (async () => {
         const place = await getPlace(mapPlace.id)
         return getLocaleStaticPaths().map(({ params }) => ({
           params: { ...params, place: mapPlace.id },
-          props: { place, mapPlace },
+          props: { place, places },
         }))
       }),
     )
@@ -27,7 +27,7 @@ export const getStaticPaths = (async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { place, mapPlace } = Astro.props
+const { place, places } = Astro.props
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
 const title = place.title[lang]
@@ -41,7 +41,7 @@ const mapUrl = getRelativeLocaleUrl(lang, 'map')
     view={{
       mode: 'detail',
       selectedId: place.id,
-      places: localizeMapPlaces([mapPlace], lang),
+      places: localizeMapPlaces(places, lang),
     }}
   >
     <div

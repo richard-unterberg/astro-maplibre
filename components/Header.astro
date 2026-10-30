@@ -5,6 +5,7 @@ import LocaleSwitch from '@components/LocaleSwitch.astro'
 import ThemeSwitch from '@components/ThemeSwitch.astro'
 import { resolveLocale, useTranslations } from '@lib/i18n'
 import { type Category, getCategories } from '@lib/places'
+import { Road } from '@lucide/astro'
 
 const lang = resolveLocale(Astro.currentLocale)
 const homeUrl = getRelativeLocaleUrl(lang)
@@ -12,12 +13,16 @@ const t = useTranslations(lang)
 const categories: Category[] = await getCategories()
 const activeCategory = Astro.params.category
 const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
+
+const isMapPage = Astro.url.pathname.includes('/map/')
 ---
 
-<header class="shrink-0 min-w-0">
+<header class="shrink-0 min-w-0 border-b border-b-px border-b-base-300">
   <div class="bg-base-100">
     <LayoutComponent class="h-16 flex justify-between items-center gap-2">
-      <a href={homeUrl} class="font-extrabold">astro-maplibre</a>
+      <a href={homeUrl} class="font-extrabold flex gap-1 items-center"
+        ><Road class="size-5" />astro-maplibre</a
+      >
       <div class="flex shrink-0 items-center gap-2 sm:gap-4">
         <LocaleSwitch />
         <ThemeSwitch />
@@ -27,14 +32,14 @@ const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
   <div class="absolute top-16 z-10">
     <nav aria-label={t('categories')} class="overflow-x-auto pb-3">
       <ul class="flex gap-2 w-max">
-        <li>
+        <!-- <li>
           <a
             href={getRelativeLocaleUrl(lang, 'map')}
             aria-current={allActive ? 'page' : undefined}
             class:list={['btn btn-sm', allActive ? 'btn-primary' : 'btn-ghost']}
             >{t('all')}</a
           >
-        </li>
+        </li> -->
         {categories.map((category) => (
           <li>
             <a

@@ -49,7 +49,7 @@ export function createMapController(map: MapLibreMap, navigate: (url: string) =>
   }
   function click(event: MapMouseEvent) {
     const place = hit(event)
-    if (!place || navigating) return
+    if (!place || navigating || (view?.mode === 'detail' && place.id === view.selectedId)) return
     navigating = true
     const startedAt = revision
     const unlock = () => {
@@ -76,7 +76,16 @@ export function createMapController(map: MapLibreMap, navigate: (url: string) =>
     setView(nextView: MapView, nextWrapper: HTMLElement, shouldAnimate = true) {
       map.stop()
       revision++
-      view = nextView
+      if (nextView.mode === 'detail') {
+        // Retain the preceding overview/category, using place data from the current locale.
+        const visibleIds = new Set(view?.places.map(({ id }) => id))
+        view = {
+          ...nextView,
+          places: nextView.places.filter(({ id }) => id === nextView.selectedId || visibleIds.has(id)),
+        }
+      } else {
+        view = nextView
+      }
       wrapper = nextWrapper
       changed = true
       animate = shouldAnimate
