@@ -26,13 +26,16 @@ interface Dictionary {
   chemnitzMap: string
   closeCategoryMenu: string
   coordinates: string
+  darkTheme: string
   dock: string
   explorePlaces: string
+  lightTheme: string
   map: string
   mapZoom: string
   open: string
   openCategoryMenu: string
   overview: string
+  theme: string
   startPage: Page
   mapPage: Page
 }
@@ -56,13 +59,16 @@ const dictionary: Dictionaries = {
     chemnitzMap: 'Chemnitz-Karte',
     closeCategoryMenu: 'Kategorienmenue schliessen',
     coordinates: 'Koordinaten',
+    darkTheme: 'Dunkel',
     dock: 'Andocken',
     explorePlaces: 'Orte erkunden',
+    lightTheme: 'Hell',
     map: 'Karte',
     mapZoom: 'Kartenzoom',
     open: 'Öffne',
     openCategoryMenu: 'Kategorienmenue öffnen',
     overview: 'Uebersicht',
+    theme: 'Farbschema',
     mapPage: {
       title: 'Interaktive Karte von Chemnitz',
       description:
@@ -81,13 +87,16 @@ const dictionary: Dictionaries = {
     chemnitzMap: 'Chemnitz map',
     closeCategoryMenu: 'Close category menu',
     coordinates: 'Coordinates',
+    darkTheme: 'Dark',
     dock: 'Dock',
     explorePlaces: 'Explore places',
+    lightTheme: 'Light',
     map: 'Map',
     mapZoom: 'Map zoom',
     open: 'Open',
     openCategoryMenu: 'Open category menu',
     overview: 'Overview',
+    theme: 'Theme',
     mapPage: {
       title: 'Interactive map of Chemnitz',
       description:

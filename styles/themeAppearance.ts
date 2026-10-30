@@ -9,8 +9,8 @@ export const ThemePreference = {
 export type ThemePreference = (typeof ThemePreference)[keyof typeof ThemePreference]
 
 const themeNames = {
-  [ThemePreference.light]: 'maplibre-vike-light',
-  [ThemePreference.dark]: 'maplibre-vike-dark',
+  [ThemePreference.light]: 'light',
+  [ThemePreference.dark]: 'dark',
 } as const
 
 export const getCurrentThemePreference = (): ThemePreference => {
