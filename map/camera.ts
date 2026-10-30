@@ -18,13 +18,12 @@ export function measurePadding(map: Rect, occluders: Rect[]): PaddingOptions {
   return { top: gap, bottom: Math.min(covered + gap, map.height - gap - 1), left: gap, right: gap }
 }
 
-type CameraMap = Pick<MapLibreMap, 'getZoom' | 'stop' | 'easeTo' | 'fitBounds' | 'setPadding'>
+type CameraMap = Pick<MapLibreMap, 'getZoom' | 'stop' | 'easeTo' | 'fitBounds'>
 
 export function applyCamera(map: CameraMap, view: MapView, padding: PaddingOptions, animate: boolean, resize = false) {
   const options = { padding, duration: animate ? 450 : 0, bearing: 0, pitch: 0 }
   map.stop()
-  // fitBounds/easeTo retain padding; reset before every intent to avoid carrying an old panel into the next page.
-  map.setPadding({ top: 0, bottom: 0, left: 0, right: 0 })
+  // Preserve the visible camera padding so transitions start without a jump.
   if (view.mode === 'detail') {
     const place = view.places.find(({ id }) => id === view.selectedId)
     if (place) map.easeTo({ ...options, center: place.coordinates, zoom: resize ? map.getZoom() : place.detailZoom })
@@ -34,6 +33,7 @@ export function applyCamera(map: CameraMap, view: MapView, padding: PaddingOptio
   if (bounds[0][0] === bounds[1][0] && bounds[0][1] === bounds[1][1]) {
     map.easeTo({ ...options, center: bounds[0], zoom: BOUNDS_MAX_ZOOM })
   } else {
-    map.fitBounds(bounds, { ...options, maxZoom: BOUNDS_MAX_ZOOM })
+    // Replace retained padding rather than adding the new panel's padding to it.
+    map.fitBounds(bounds, { ...options, maxZoom: BOUNDS_MAX_ZOOM, absolutePadding: true })
   }
 }

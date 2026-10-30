@@ -14,10 +14,23 @@ const padding = { top: 32, bottom: 332, left: 32, right: 32 }
 
 function setup() {
   const calls = []
-  const map = Object.fromEntries(
-    ['stop', 'setPadding', 'easeTo', 'fitBounds'].map((name) => [name, (...args) => calls.push({ name, args })]),
-  )
-  map.getZoom = () => 16
+  let currentPadding = { top: 0, bottom: 0, left: 0, right: 0 }
+  const map = {
+    getZoom: () => 16,
+    stop: () => calls.push({ name: 'stop', args: [] }),
+    setPadding: (padding) => {
+      calls.push({ name: 'setPadding', args: [padding] })
+      currentPadding = { ...padding }
+    },
+    easeTo: (options) => {
+      calls.push({ name: 'easeTo', args: [options], startPadding: { ...currentPadding } })
+      if (options.padding) currentPadding = { ...options.padding }
+    },
+    fitBounds: (bounds, options) => {
+      calls.push({ name: 'fitBounds', args: [bounds, options], startPadding: { ...currentPadding } })
+      if (options.absolutePadding) currentPadding = { ...options.padding }
+    },
+  }
   return { map, calls, cameraCalls: () => calls.filter(({ name }) => ['easeTo', 'fitBounds'].includes(name)) }
 }
 
@@ -50,7 +63,26 @@ test('detail camera uses measured padding once and retains user zoom on layout c
   assert.ok(cameraCalls().every(({ args }) => !('offset' in args[0])))
 })
 
-test('detail to overview resets padding and fits actual coordinate extrema', () => {
+test('same-zoom marker changes start with the current occluder padding, including when panel height changes', () => {
+  const nextPlace = { ...place, id: other.id, coordinates: other.coordinates }
+  for (const nextPadding of [padding, { ...padding, bottom: 180 }]) {
+    const { map, calls, cameraCalls } = setup()
+    applyCamera(map, detail, padding, false)
+    applyCamera(map, { mode: 'detail', selectedId: nextPlace.id, places: [place, nextPlace] }, nextPadding, true)
+    const transition = cameraCalls()[1]
+    assert.deepEqual(transition.startPadding, padding, 'the animation must start from the visible padded camera')
+    assert.deepEqual(transition.args[0].padding, nextPadding)
+    assert.deepEqual(transition.args[0].center, nextPlace.coordinates)
+    assert.equal(transition.args[0].zoom, place.detailZoom)
+    assert.equal(transition.args[0].duration, 450)
+    assert.equal(
+      calls.some(({ name }) => name === 'setPadding'),
+      false,
+    )
+  }
+})
+
+test('detail to overview transitions to absolute padding and fits actual coordinate extrema', () => {
   const { map, calls, cameraCalls } = setup()
   applyCamera(map, detail, padding, false)
   applyCamera(map, { mode: 'bounds', places: [place, other], fallbackBounds }, { ...padding, bottom: 32 }, true)
@@ -63,7 +95,12 @@ test('detail to overview resets padding and fits actual coordinate extrema', () 
   assert.equal(fit.args[1].padding.bottom, 32)
   assert.equal(fit.args[1].duration, 450)
   assert.equal(fit.args[1].maxZoom, BOUNDS_MAX_ZOOM)
-  assert.deepEqual(calls[4], { name: 'setPadding', args: [{ top: 0, bottom: 0, left: 0, right: 0 }] })
+  assert.equal(fit.args[1].absolutePadding, true, 'bounds padding must replace rather than add to detail padding')
+  assert.deepEqual(fit.startPadding, padding)
+  assert.equal(
+    calls.some(({ name }) => name === 'setPadding'),
+    false,
+  )
 })
 
 test('single and coincident points get bounded zoom; empty categories use overview bounds', () => {
