@@ -1,0 +1,174 @@
+#map {
+  --map-control-bg: color-mix(in oklab, var(--color-base-100) 92%, transparent);
+  --map-control-border: var(--color-base-muted-light);
+  --map-control-content: var(--color-base-content);
+  --map-control-focus: var(--color-primary-muted-medium);
+  --map-control-hover: var(--color-primary-muted-superlight);
+  --map-control-icon-filter: none;
+  /* --map-control-shadow: 0 0 0 1px var(--map-control-border); */
+  --map-control-shadow: none;
+
+  color: var(--map-control-content);
+  font-family: var(--font-sans);
+}
+
+[data-theme='dark'] #map {
+  --map-control-bg: color-mix(in oklab, var(--color-base-200) 88%, transparent);
+  --map-control-icon-filter: invert(1) brightness(1.2);
+}
+
+#map .maplibregl-ctrl-group,
+#map .maplibregl-ctrl-attrib,
+#map .maplibregl-ctrl-attrib.maplibregl-compact,
+#map .maplibregl-ctrl-scale {
+  background-color: var(--map-control-bg);
+  color: var(--map-control-content);
+}
+
+#map .maplibregl-ctrl-group {
+  border-radius: var(--radius-field);
+}
+
+#map .maplibregl-ctrl-group:not(:empty) {
+  box-shadow: var(--map-control-shadow);
+}
+
+#map .maplibregl-ctrl-group button {
+  color: var(--map-control-content);
+}
+
+#map .maplibregl-ctrl-group button + button {
+  border-top-color: var(--map-control-border);
+}
+
+#map .maplibregl-ctrl button .maplibregl-ctrl-icon {
+  filter: var(--map-control-icon-filter);
+}
+
+@media (hover: hover) {
+  #map .maplibregl-ctrl button:not(:disabled):hover {
+    background-color: var(--map-control-hover);
+  }
+}
+
+#map .maplibregl-ctrl-attrib-button:focus,
+#map .maplibregl-ctrl-group button:focus,
+#map .maplibregl-ctrl-group button:focus:focus-visible {
+  box-shadow: 0 0 0 2px var(--map-control-focus);
+}
+
+#map .maplibregl-ctrl-group button:focus:first-child {
+  border-radius: var(--radius-field) var(--radius-field) 0 0;
+}
+
+#map .maplibregl-ctrl-group button:focus:last-child {
+  border-radius: 0 0 var(--radius-field) var(--radius-field);
+}
+
+#map .maplibregl-ctrl-group button:focus:only-child {
+  border-radius: var(--radius-field);
+}
+
+#map .maplibregl-ctrl-attrib {
+  border-radius: var(--radius-field);
+  box-shadow: var(--map-control-shadow);
+  font-family: var(--font-sans);
+}
+
+#map .maplibregl-ctrl-attrib.maplibregl-compact {
+  border-radius: 999px;
+  color: var(--map-control-content);
+}
+
+#map .maplibregl-ctrl-attrib-button {
+  background-color: transparent;
+  filter: var(--map-control-icon-filter);
+}
+
+#map .maplibregl-ctrl button:not(:disabled):active,
+.maplibre-vike-map
+  .maplibregl-ctrl-attrib.maplibregl-compact-show
+  .maplibregl-ctrl-attrib-button {
+  background-color: var(--map-control-hover);
+}
+
+#map .maplibregl-ctrl-attrib a {
+  color: var(--color-primary);
+}
+
+#map .maplibregl-ctrl-attrib a:hover {
+  color: var(--color-primary);
+}
+
+#map .maplibregl-ctrl-scale {
+  border-color: var(--map-control-content);
+  border-radius: 0 0 var(--radius-selector) var(--radius-selector);
+  border-top-color: transparent;
+  box-shadow: var(--map-control-shadow);
+  color: var(--map-control-content);
+  font-family: var(--font-mono);
+}
+
+#map .map-marker {
+  --marker-color: var(--color-primary);
+
+  align-items: center;
+  background: var(--marker-color);
+  border: 2px solid var(--color-base-100);
+  border-radius: 999px 999px 999px 0;
+  cursor: pointer;
+  display: flex;
+  height: 1.35rem;
+  justify-content: center;
+  transform: rotate(-45deg);
+  transition: none;
+  width: 1.35rem;
+}
+
+#map .map-marker::after {
+  background: var(--color-base-100);
+  border-radius: 999px;
+  content: '';
+  display: block;
+  height: 0.38rem;
+  width: 0.38rem;
+}
+
+#map .map-marker[data-category='culture'] {
+  --marker-color: #7c3aed;
+}
+
+#map .map-marker[data-category='history'] {
+  --marker-color: #b45309;
+}
+
+#map .map-marker[data-category='nature'] {
+  --marker-color: #15803d;
+}
+
+#map .map-marker[data-category='mobility'] {
+  --marker-color: #0369a1;
+}
+
+#map .map-marker[data-category='food'] {
+  --marker-color: #be123c;
+}
+
+#map .map-marker[data-category='workspace'] {
+  --marker-color: #0f766e;
+}
+
+#map .map-marker[data-selected='true'] {
+  transform: rotate(-45deg) scale(1.18);
+}
+
+#map .map-marker:focus-visible {
+  outline: 3px solid var(--color-primary-muted-medium);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  #map .map-marker:hover {
+    transform: rotate(-45deg) scale(1.12);
+  }
+}

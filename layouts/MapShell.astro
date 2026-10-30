@@ -1,6 +1,71 @@
-<div class="">
-  <div id="map" transition:persist="main-map" data-map>
-    <!-- map here -->
-  </div>
+---
+import 'maplibre-gl/dist/maplibre-gl.css'
+import '@map/map-controls.css'
+
+import { getMapStyleUrl } from '@map/mapStyles'
+import { ThemePreference } from '@styles/themeAppearance'
+---
+
+<div class="h-full relative">
+  <div
+    id="map"
+    class="h-full not-prose"
+    transition:persist="main-map"
+    data-map
+    data-map-style-light={getMapStyleUrl(ThemePreference.light)}
+    data-map-style-dark={getMapStyleUrl(ThemePreference.dark)}
+  />
   <slot />
 </div>
+
+<script>
+import { getCurrentThemePreference } from '@styles/themeAppearance'
+import { Map as MapLibreMap, setWorkerUrl } from 'maplibre-gl'
+import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
+
+setWorkerUrl(mapWorkerUrl)
+
+let map: MapLibreMap | undefined
+let themeObserver: MutationObserver | undefined
+
+document.addEventListener('astro:page-load', () => {
+  const container = document.querySelector<HTMLElement>('[data-map]')
+
+  if (map && map.getContainer() === container) {
+    map.resize()
+    return
+  }
+
+  themeObserver?.disconnect()
+  map?.remove()
+  map = undefined
+
+  if (!container) return
+
+  const lightStyle = container.dataset.mapStyleLight
+  const darkStyle = container.dataset.mapStyleDark
+  if (!lightStyle || !darkStyle) throw new Error('Missing map styles')
+
+  const styles = { light: lightStyle, dark: darkStyle }
+  let theme = getCurrentThemePreference()
+
+  map = new MapLibreMap({
+    container,
+    style: styles[theme],
+    center: [12.9252, 50.8342],
+    zoom: 12,
+  })
+
+  themeObserver = new MutationObserver(() => {
+    const nextTheme = getCurrentThemePreference()
+    if (nextTheme === theme) return
+
+    theme = nextTheme
+    map?.setStyle(styles[theme])
+  })
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+})
+</script>

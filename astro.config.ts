@@ -34,6 +34,8 @@ export default defineConfig({
           // `.h-*`, `.min-h-*`, `.sm\:w-*`, and `.lg\:min-h-*`.
           /(?:^\.|\\:)(?:h|min-h|max-h|w|min-w|max-w|basis)-/,
           /(?:^\.|\\:)prose-container/,
+          // MapLibre creates its canvas and controls after the static HTML is rendered.
+          /\.maplibregl-/,
         ],
       },
     }),
