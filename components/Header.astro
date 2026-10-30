@@ -5,7 +5,7 @@ import LocaleSwitch from '@components/LocaleSwitch.astro'
 import ThemeSwitch from '@components/ThemeSwitch.astro'
 import { resolveLocale, useTranslations } from '@lib/i18n'
 import { type Category, getCategories } from '@lib/places'
-import { Road } from '@lucide/astro'
+import { FaceSlightlySmiling } from '@lucide/astro'
 
 const lang = resolveLocale(Astro.currentLocale)
 const homeUrl = getRelativeLocaleUrl(lang)
@@ -14,14 +14,17 @@ const categories: Category[] = await getCategories()
 const activeCategory = Astro.params.category
 const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
 
-const isMapPage = Astro.url.pathname.includes('/map/')
+const isMapPage =
+  Astro.url.pathname.includes('/map/') ||
+  Astro.url.pathname.includes('/category/')
 ---
 
 <header class="shrink-0 min-w-0 border-b border-b-px border-b-base-300">
   <div class="bg-base-100">
     <LayoutComponent class="h-16 flex justify-between items-center gap-2">
-      <a href={homeUrl} class="font-extrabold flex gap-1 items-center"
-        ><Road class="size-5" />astro-maplibre</a
+      <a href={homeUrl} class="font-extrabold flex gap-2 items-center"
+        ><FaceSlightlySmiling class="size-5" />
+        <span class="hidden sm:block">astro-maplibre</span></a
       >
       <div class="flex shrink-0 items-center gap-2 sm:gap-4">
         <LocaleSwitch />
@@ -29,32 +32,28 @@ const isMapPage = Astro.url.pathname.includes('/map/')
       </div>
     </LayoutComponent>
   </div>
-  <div class="absolute top-16 z-10">
-    <nav aria-label={t('categories')} class="overflow-x-auto pb-3">
-      <ul class="flex gap-2 w-max">
-        <!-- <li>
-          <a
-            href={getRelativeLocaleUrl(lang, 'map')}
-            aria-current={allActive ? 'page' : undefined}
-            class:list={['btn btn-sm', allActive ? 'btn-primary' : 'btn-ghost']}
-            >{t('all')}</a
-          >
-        </li> -->
-        {categories.map((category) => (
-          <li>
-            <a
-              href={getRelativeLocaleUrl(lang, `category/${category.id}`)}
-              aria-current={activeCategory === category.id ? 'page' : undefined}
-              class:list={[
-                'btn btn-sm',
-                activeCategory === category.id ? 'btn-primary' : 'btn-ghost',
-              ]}
-            >
-              {category.title[lang]}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+  {isMapPage && (
+    <div class="lg:hidden absolute top-16 z-10 w-full left-0 bg-base-300/50 dark:bg-base-100/50">
+      <nav aria-label={t('categories')} class="overflow-x-auto p-3">
+        <ul class="flex gap-2 w-full justify-center">
+          {categories.map((category) => (
+            <li>
+              <a
+                href={getRelativeLocaleUrl(lang, `category/${category.id}`)}
+                aria-current={
+                  activeCategory === category.id ? 'page' : undefined
+                }
+                class:list={[
+                  'btn btn-sm',
+                  activeCategory === category.id ? 'btn-neutral' : 'btn-ghost',
+                ]}
+              >
+                {category.title[lang]}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  )}
 </header>
