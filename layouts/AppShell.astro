@@ -20,10 +20,16 @@ const lang = resolveLocale(Astro.currentLocale)
     description={description}
     robots={Astro.props.robots}
   />
-  <body transition:animate={fade({ duration: '120ms' })}>
+  <body>
     <Header />
     <main class="prose-container relative h-[calc(100dvh-16*var(--spacing))]">
       <slot />
     </main>
+
+    <script>
+    document.addEventListener('astro:before-swap', (e) => {
+      e.viewTransition?.skipTransition()
+    })
+    </script>
   </body>
 </html>

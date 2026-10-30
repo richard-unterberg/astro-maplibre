@@ -1,0 +1,55 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import LayoutComponent from '@components/LayoutComponent.astro'
+import Shell from '@layouts/AppShell.astro'
+import MapShell from '@layouts/MapShell.astro'
+import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { getPlaces } from '@lib/places'
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+
+export const prerender = true
+
+export const getStaticPaths = (async () => {
+  // Läuft beim Build: ein Fetch der Overview, keine Anfrage pro Place-Seite.
+  const places = await getPlaces()
+
+  // Jeder Ort wird mit jeder konfigurierten Sprachroute kombiniert.
+  return places.flatMap((place) =>
+    getLocaleStaticPaths().map(({ params }) => ({
+      params: { ...params, place: place.id },
+      props: { place },
+    })),
+  )
+}) satisfies GetStaticPaths
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { place } = Astro.props
+const lang = resolveLocale(Astro.currentLocale)
+const t = useTranslations(lang)
+const title = place.title[lang]
+const [longitude, latitude] = place.coordinates
+const description = `${title} – ${t('chemnitzLocation')}. ${t('coordinates')}: ${latitude}, ${longitude}.`
+const mapUrl = getRelativeLocaleUrl(lang, 'map')
+---
+
+<Shell title={title} description={description}>
+  <MapShell>
+    <LayoutComponent type="small" class="py-8">
+      <a href={mapUrl}>{t('back')}: {t('map')}</a>
+      <article>
+        <h1>{title}</h1>
+        <dl>
+          <dt>{t('coordinates')} (lon, lat)</dt>
+          <dd>{longitude}, {latitude}</dd>
+          <dt>{t('mapZoom')}</dt>
+          <dd>{place.detailZoom}</dd>
+        </dl>
+        <h2>{t('categories')}</h2>
+        <ul>
+          {place.categoryIds.map((categoryId) => <li>{categoryId}</li>)}
+        </ul>
+      </article>
+    </LayoutComponent>
+  </MapShell>
+</Shell>

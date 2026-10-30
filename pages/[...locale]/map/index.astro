@@ -1,12 +1,31 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
+import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { getPlaces } from '@lib/places'
 
 export const getStaticPaths = getLocaleStaticPaths
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
+const places = await getPlaces()
 ---
 
 <Shell title={t('mapPage.title')} description={t('mapPage.description')}>
-  {t('chemnitzMap')}
+  <MapShell>
+    <LayoutComponent type="small" class="py-8">
+      <h1>{t('chemnitzMap')}</h1>
+      <h2>{t('explorePlaces')}</h2>
+      <ul>
+        {places.map((place) => (
+          <li>
+            <a href={getRelativeLocaleUrl(lang, `place/${place.id}`)}>
+              {place.title[lang]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </LayoutComponent>
+  </MapShell>
 </Shell>
