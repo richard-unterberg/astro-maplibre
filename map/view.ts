@@ -34,11 +34,9 @@ export function getBounds(places: Pick<PlaceOverview, 'coordinates'>[]): Bounds 
 
 const colors: Record<string, string> = {
   culture: '#7c3aed',
-  history: '#b45309',
   nature: '#15803d',
   mobility: '#0369a1',
-  food: '#be123c',
-  workspace: '#0f766e',
+  citylife: '#be123c',
 }
 
 export function markerData(view: MapView) {

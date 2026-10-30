@@ -14,15 +14,17 @@ const activeCategory = Astro.params.category
 const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
 ---
 
-<header class="bg-base-100 shrink-0 min-w-0">
-  <LayoutComponent class="h-16 flex justify-between items-center gap-2">
-    <a href={homeUrl} class="font-extrabold">astro-maplibre</a>
-    <div class="flex shrink-0 items-center gap-2 sm:gap-4">
-      <LocaleSwitch />
-      <ThemeSwitch />
-    </div>
-  </LayoutComponent>
-  <LayoutComponent>
+<header class="shrink-0 min-w-0">
+  <div class="bg-base-100">
+    <LayoutComponent class="h-16 flex justify-between items-center gap-2">
+      <a href={homeUrl} class="font-extrabold">astro-maplibre</a>
+      <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+        <LocaleSwitch />
+        <ThemeSwitch />
+      </div>
+    </LayoutComponent>
+  </div>
+  <div class="absolute top-16 z-10">
     <nav aria-label={t('categories')} class="overflow-x-auto pb-3">
       <ul class="flex gap-2 w-max">
         <li>
@@ -49,5 +51,5 @@ const allActive = Astro.url.pathname === getRelativeLocaleUrl(lang, 'map')
         ))}
       </ul>
     </nav>
-  </LayoutComponent>
+  </div>
 </header>
