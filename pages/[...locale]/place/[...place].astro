@@ -10,10 +10,7 @@ import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
 export const prerender = true
 
 export const getStaticPaths = (async () => {
-  // Läuft beim Build: ein Fetch der Overview, keine Anfrage pro Place-Seite.
   const places = await getPlaces()
-
-  // Jeder Ort wird mit jeder konfigurierten Sprachroute kombiniert.
   return places.flatMap((place) =>
     getLocaleStaticPaths().map(({ params }) => ({
       params: { ...params, place: place.id },
@@ -35,22 +32,24 @@ const mapUrl = getRelativeLocaleUrl(lang, 'map')
 
 <Shell title={title} description={description}>
   <MapShell>
-    <LayoutComponent type="small" class="py-8">
-      <a href={mapUrl}>{t('back')}: {t('map')}</a>
-      <article>
-        <h1>{title}</h1>
-        <dl>
-          <dt>{t('coordinates')} (lon, lat)</dt>
-          <dd>{longitude}, {latitude}</dd>
-          <dt>{t('mapZoom')}</dt>
-          <dd>{place.detailZoom}</dd>
-        </dl>
-        <h2>{t('categories')}</h2>
-        <ul>
-          {place.categoryIds.map((categoryId) => <li>{categoryId}</li>)}
-        </ul>
-      </article>
-    </LayoutComponent>
+    <div class="h-1/2 absolute bottom-0 left-0 bg-base-100 w-full">
+      <LayoutComponent>
+        <a href={mapUrl}>{t('back')}: {t('map')}</a>
+        <article>
+          <h1>{title}</h1>
+          <dl>
+            <dt>{t('coordinates')} (lon, lat)</dt>
+            <dd>{longitude}, {latitude}</dd>
+            <dt>{t('mapZoom')}</dt>
+            <dd>{place.detailZoom}</dd>
+          </dl>
+          <h2>{t('categories')}</h2>
+          <ul>
+            {place.categoryIds.map((categoryId) => <li>{categoryId}</li>)}
+          </ul>
+        </article>
+      </LayoutComponent>
+    </div>
   </MapShell>
 </Shell>
 

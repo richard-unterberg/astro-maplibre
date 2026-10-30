@@ -20,7 +20,7 @@ import { ThemePreference } from '@styles/themeAppearance'
 
 <script>
 import { getCurrentThemePreference } from '@styles/themeAppearance'
-import { Map as MapLibreMap, setWorkerUrl } from 'maplibre-gl'
+import { Map as MapLibreMap, NavigationControl, setWorkerUrl } from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 
 setWorkerUrl(mapWorkerUrl)
@@ -55,6 +55,8 @@ document.addEventListener('astro:page-load', () => {
     center: [12.9252, 50.8342],
     zoom: 12,
   })
+
+  map.addControl(new NavigationControl({ showZoom: true, showCompass: true }), 'top-right')
 
   themeObserver = new MutationObserver(() => {
     const nextTheme = getCurrentThemePreference()

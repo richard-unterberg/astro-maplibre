@@ -4,32 +4,20 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import Shell from '@layouts/AppShell.astro'
 import MapShell from '@layouts/MapShell.astro'
 import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
-import { getPlaces } from '@lib/places'
 
 export const getStaticPaths = getLocaleStaticPaths
 const lang = resolveLocale(Astro.currentLocale)
 const t = useTranslations(lang)
-const places = await getPlaces()
 ---
 
 <Shell title={t('mapPage.title')} description={t('mapPage.description')}>
   <MapShell>
-    <div
-      class="p-0 absolute top-0 left-0 w-dvw h-full bg-base-100 z-4 overflow-scroll"
-    >
-      <div class="">
-        <h1>{t('chemnitzMap')}</h1>
-        <h2>{t('explorePlaces')}</h2>
-        <ul>
-          {places.map((place) => (
-            <li>
-              <a href={getRelativeLocaleUrl(lang, `place/${place.id}`)}>
-                {place.title[lang]}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div class="p-0 absolute bottom-8 left-0 w-dvw h-16">
+      <LayoutComponent>
+        <a class="btn" href={getRelativeLocaleUrl(lang, 'map/overview')}
+          >{t('overview')}</a
+        >
+      </LayoutComponent>
     </div>
   </MapShell>
 </Shell>

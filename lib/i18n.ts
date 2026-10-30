@@ -67,7 +67,7 @@ const dictionary: Dictionaries = {
     mapZoom: 'Kartenzoom',
     open: 'Öffne',
     openCategoryMenu: 'Kategorienmenue öffnen',
-    overview: 'Uebersicht',
+    overview: 'Übersicht',
     theme: 'Farbschema',
     mapPage: {
       title: 'Interaktive Karte von Chemnitz',
