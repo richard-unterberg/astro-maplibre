@@ -7,7 +7,6 @@
   "driver": "codex",
   "model": "gpt-6-luna",
   "effort": "low",
-  "branch": "agent-2026-10-30T15-37-55-675Z",
   "contextTokens": 28854,
   "caller": {
     "runner": {
