@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-30T15-40-05-045Z",
+  "startedAt": "2026-10-30T15:40:06.465Z",
+  "status": "running",
+  "intent": "Work on tickets/2026-10-30_karten-bounds-kategoriennavigation-klickbare-marker.md. Do not start any other ticket.",
+  "driver": "codex",
+  "model": "gpt-6.1-sol",
+  "caller": {
+    "runner": {
+      "host": "debian-4gb-nbg1-4",
+      "pid": 3642493,
+      "publish": "commit"
+    },
+    "host": "debian-4gb-nbg1-4",
+    "publish": "commit"
+  }
+}
