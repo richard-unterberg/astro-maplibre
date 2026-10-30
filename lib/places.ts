@@ -1,8 +1,11 @@
 import { z } from 'astro/zod'
 import { locales } from './i18n.ts'
 
-const dataUrl = 'https://raw.githubusercontent.com/richard-unterberg/astro-maplibre/refs/heads/main/public/data/'
+const repository = 'richard-unterberg/astro-maplibre'
+const rawRepositoryUrl = `https://raw.githubusercontent.com/${repository}/`
+const dataUrl = `${rawRepositoryUrl}refs/heads/main/public/data/`
 const overviewUrl = `${dataUrl}markers/overview.json`
+const revisionUrl = `https://api.github.com/repos/${repository}/git/ref/heads/main`
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Expected a URL-safe ID')
 const localizedText = z.record(z.enum(locales), z.string().trim().min(1))
@@ -114,6 +117,26 @@ export function createPlaceDetailsLoader(
   }
 }
 
-export const getPlaces = createPlacesLoader()
-export const getCategories = createCategoriesLoader()
-export const getPlace = createPlaceDetailsLoader(fetch, getCategories)
+export function createPlaceDataFetcher(fetcher: typeof fetch = fetch): typeof fetch {
+  let revision: Promise<string> | undefined
+
+  return async (input, options) => {
+    const request = new Request(input, options)
+    if (!request.url.startsWith(dataUrl)) return fetcher(request)
+
+    // Resolve main once so cached categories and later detail requests use the same commit.
+    revision ??= loadData(
+      revisionUrl,
+      z.object({ object: z.object({ sha: z.string().regex(/^[a-f0-9]{40}$/) }) }),
+      fetcher,
+    ).then(({ object }) => object.sha)
+
+    const url = `${rawRepositoryUrl}${await revision}/public/data/${request.url.slice(dataUrl.length)}`
+    return fetcher(new Request(url, request))
+  }
+}
+
+const fetchPlaceData = createPlaceDataFetcher()
+export const getPlaces = createPlacesLoader(fetchPlaceData)
+export const getCategories = createCategoriesLoader(fetchPlaceData)
+export const getPlace = createPlaceDetailsLoader(fetchPlaceData, getCategories)

@@ -1,7 +1,12 @@
 import assert from 'node:assert/strict'
 import { readdir, readFile } from 'node:fs/promises'
 import { test } from 'node:test'
-import { createCategoriesLoader, createPlaceDetailsLoader, createPlacesLoader } from '../lib/places.ts'
+import {
+  createCategoriesLoader,
+  createPlaceDataFetcher,
+  createPlaceDetailsLoader,
+  createPlacesLoader,
+} from '../lib/places.ts'
 import { markerData } from '../map/view.ts'
 
 const overviewUrl =
@@ -115,6 +120,75 @@ const categories = ['history', 'culture'].map((id) => ({
   description: { de: `Beschreibung ${id}`, en: `Description ${id}` },
 }))
 const description = { de: 'Ausführliche Ortsbeschreibung.', en: 'Full place description.' }
+
+const revisionUrl = 'https://api.github.com/repos/richard-unterberg/astro-maplibre/git/ref/heads/main'
+
+test('keeps cached categories and later details on the same commit when main changes', async () => {
+  const revision = 'a'.repeat(40)
+  const snapshotUrl = dataUrl.replace('refs/heads/main', revision)
+  const marker = place({ id: 'markthalle', categoryIds: ['culture'] })
+  const updatedMarker = { ...marker, categoryIds: ['citylife'] }
+  const updatedCategories = [{ ...categories[0], id: 'citylife' }]
+  let currentRevision = revision
+  const requests = []
+  const fetcher = createPlaceDataFetcher(async (input, options) => {
+    const request = new Request(input, options)
+    requests.push(request)
+    if (request.url === revisionUrl) return Response.json({ object: { sha: currentRevision } })
+
+    const useSnapshot = request.url.startsWith(snapshotUrl) || currentRevision === revision
+    const current = useSnapshot ? marker : updatedMarker
+    if (request.url.endsWith('categories.json')) return Response.json(useSnapshot ? categories : updatedCategories)
+    if (request.url.endsWith('overview.json')) return Response.json([current])
+    return Response.json({ ...current, description })
+  })
+  const loadCategories = createCategoriesLoader(fetcher)
+  const loadPlaces = createPlacesLoader(fetcher)
+  const loadDetails = createPlaceDetailsLoader(fetcher, loadCategories)
+
+  const [loadedCategories, overview] = await Promise.all([loadCategories(), loadPlaces()])
+  currentRevision = 'b'.repeat(40)
+  const detail = await loadDetails('markthalle')
+
+  assert.deepEqual(overview, [marker])
+  assert.deepEqual(detail.categoryIds, overview[0].categoryIds)
+  assert.strictEqual(detail.categories[0], loadedCategories[1])
+  assert.equal(requests.filter(({ url }) => url === revisionUrl).length, 1)
+  assert.deepEqual(
+    requests
+      .filter(({ url }) => url !== revisionUrl)
+      .map(({ url }) => url)
+      .sort(),
+    [`${snapshotUrl}categories.json`, `${snapshotUrl}markers/markthalle.json`, `${snapshotUrl}markers/overview.json`],
+  )
+  for (const request of requests) {
+    assert.equal(request.headers.get('Accept'), 'application/json')
+    assert.ok(request.signal instanceof AbortSignal)
+  }
+})
+
+test('reports failed or invalid GitHub revisions without fetching unversioned data', async () => {
+  for (const response of [
+    new Response('Unavailable', { status: 503 }),
+    Response.json({ object: { sha: '../main' } }),
+    Response.json({}),
+    new Response('{broken'),
+  ]) {
+    const requests = []
+    const fetcher = createPlaceDataFetcher(async (input, options) => {
+      requests.push(new Request(input, options).url)
+      return response
+    })
+    const load = createCategoriesLoader(fetcher)
+
+    await assert.rejects(load, (error) => {
+      assert.ok(error.message.includes(revisionUrl))
+      assert.ok(error.message.includes(`${dataUrl}categories.json`))
+      return true
+    })
+    assert.deepEqual(requests, [revisionUrl])
+  }
+})
 
 test('loads full entries separately, resolving categories and sharing each snapshot across locales', async () => {
   const requests = []
