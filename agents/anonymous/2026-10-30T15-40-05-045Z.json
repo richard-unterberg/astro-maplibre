@@ -1,17 +1,27 @@
 {
   "id": "2026-10-30T15-40-05-045Z",
   "startedAt": "2026-10-30T15:40:06.465Z",
-  "status": "running",
+  "endedAt": "2026-10-30T16:28:56.152Z",
+  "status": "failed",
   "intent": "Work on tickets/2026-10-30_karten-bounds-kategoriennavigation-klickbare-marker.md. Do not start any other ticket.",
+  "title": "Kartenmarker Kategoriennavigation Bounds",
   "driver": "codex",
   "model": "gpt-6.1-sol",
+  "effort": "high",
+  "branch": "agent-map-category-markers",
   "caller": {
     "runner": {
       "host": "debian-4gb-nbg1-4",
       "pid": 3642493,
-      "publish": "commit"
+      "publish": "commit",
+      "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70"
     },
+    "pid": 3642493,
     "host": "debian-4gb-nbg1-4",
-    "publish": "commit"
+    "baseCommit": "a65301fbcd3eb024df416259bc9adaf292800f70",
+    "publish": "commit",
+    "kind": "prompt",
+    "workspace": "/home/openagent/projects/astro-maplibre/.branches/agent-2026-10-30T15-40-05-045Z",
+    "sessionId": "01a18d77-e978-7732-ac92-b2f98f6cdd5c"
   }
 }
