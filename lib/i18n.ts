@@ -39,6 +39,7 @@ interface Dictionary {
   theme: string
   startPage: Page
   mapPage: Page
+  errorPage: Page
 }
 
 type TranslationKey<T> = {
@@ -80,6 +81,10 @@ const dictionary: Dictionaries = {
       title: 'Willkommen zu astro-maplibre',
       description: '',
     },
+    errorPage: {
+      title: 'Fehler',
+      description: '',
+    },
   },
   en: {
     all: 'All',
@@ -107,6 +112,10 @@ const dictionary: Dictionaries = {
     },
     startPage: {
       title: 'Welcome to astro-maplibre',
+      description: '',
+    },
+    errorPage: {
+      title: 'Error',
       description: '',
     },
   },

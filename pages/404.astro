@@ -1,0 +1,20 @@
+---
+import LayoutComponent from '@components/LayoutComponent.astro'
+import Shell from '@layouts/AppShell.astro'
+import { getLocaleStaticPaths, resolveLocale, useTranslations } from '@lib/i18n'
+import { getRelativeLocaleUrl } from 'astro/virtual-modules/i18n.js'
+
+export const getStaticPaths = getLocaleStaticPaths
+const lang = resolveLocale(Astro.currentLocale)
+const mapUrl = getRelativeLocaleUrl(lang, 'map')
+const startUrl = getRelativeLocaleUrl(lang, '')
+const t = useTranslations(lang)
+---
+
+<Shell title={t('errorPage.title')} description={t('errorPage.description')}>
+  <LayoutComponent>
+    <h1>Oh no - a 404 happened</h1>
+    <a class="btn btn-neutral" href={mapUrl}>{t('map')}</a>
+    <a class="btn btn-neutral" href={startUrl}>{t('startPage.title')}</a>
+  </LayoutComponent>
+</Shell>
